@@ -4,7 +4,7 @@ from manim import *
 class PKU2021StrongFoundationAbcProblem(Scene):
     def construct(self):
         # 标题
-        title = Text("2021 北大强基：求 a + b + c", font_size=36, color=BLUE)
+        title = Text("2021 北大强基：考察三元对称式", font_size=60, color=BLUE)
         subtitle_arr = [
             Text("题目来源： https://www.bilibili.com/video/BV1nh4y1M7h9", font_size=24, color=YELLOW),
             Text("作者：hans7", font_size=24, color=YELLOW),
@@ -15,7 +15,7 @@ class PKU2021StrongFoundationAbcProblem(Scene):
         self.play(Write(title), run_time=1)
         self.play(FadeIn(subtitle_group, shift=DOWN))
         self.play(Indicate(subtitle_arr[1], scale_factor=1.2, color=YELLOW))
-        self.wait(2)
+        self.wait(8.1)
         self.play(FadeOut(title, subtitle_group))
 
         # 初始条件
@@ -28,7 +28,7 @@ class PKU2021StrongFoundationAbcProblem(Scene):
 
         self.play(Write(eqs), run_time=1.5)
         self.play(FadeIn(note, shift=UP))
-        self.wait(2)
+        self.wait(11.387)
         self.play(FadeOut(note))
 
         thought_arr = [
@@ -40,7 +40,7 @@ class PKU2021StrongFoundationAbcProblem(Scene):
         thought_group = VGroup(*thought_arr).arrange(DOWN, buff=0.3)
         self.play(ReplacementTransform(eqs, thought_group))
         self.play(Indicate(thought_arr[2], scale_factor=1.2, color=BLUE))
-        self.wait(4)
+        self.wait(13.2)
 
         # Step 1: 三式相加
         step1_arr = [
@@ -51,7 +51,7 @@ class PKU2021StrongFoundationAbcProblem(Scene):
         ]
         step1_group = VGroup(*step1_arr).arrange(DOWN, buff=0.3)
         self.play(ReplacementTransform(thought_group, step1_group))
-        self.wait(2)
+        self.wait(4.275)
 
         # Step 2: 分别乘 c, a, b
         step2_arr = [
@@ -62,7 +62,7 @@ class PKU2021StrongFoundationAbcProblem(Scene):
         ]
         step2_group = VGroup(step2_arr).arrange(DOWN, buff=0.3)
         self.play(ReplacementTransform(step1_group, step2_group))
-        self.wait(2)
+        self.wait(5.813)
 
         # 三式相加
         sum_mult_arr = [
@@ -74,7 +74,7 @@ class PKU2021StrongFoundationAbcProblem(Scene):
         sum_mult_group = VGroup(*sum_mult_arr).arrange(DOWN, buff=0.3)
         self.play(ReplacementTransform(step2_group, sum_mult_group))
         self.play(Indicate(sum_mult_arr[-1], scale_factor=1.2, color=GREEN))
-        self.wait(2)
+        self.wait(6.825)
 
         # Step 3: 展开 (a+b+c)^2 并代入 ab+bc+ca = 0
         square_arr = [
@@ -88,7 +88,7 @@ class PKU2021StrongFoundationAbcProblem(Scene):
         square_group = VGroup(*square_arr).arrange(DOWN, buff=0.3)
         self.play(ReplacementTransform(sum_mult_group, square_group))
         self.play(Indicate(square_arr[-1], scale_factor=1.2, color=BLUE))
-        self.wait(2)
+        self.wait(11.987)
 
         # Step 4: 移项并相乘
         shift_arr = [
@@ -103,7 +103,7 @@ class PKU2021StrongFoundationAbcProblem(Scene):
         shift_group = VGroup(*shift_arr).arrange(DOWN, buff=0.3)
         self.play(ReplacementTransform(square_group, shift_group))
         self.play(Indicate(shift_arr[-1], scale_factor=1.2, color=BLUE))
-        self.wait(2)
+        self.wait(14.15)
 
         # 讨论 abc 能否为 0
         abc_discuss_arr = [
@@ -114,7 +114,7 @@ class PKU2021StrongFoundationAbcProblem(Scene):
         abc_discuss_group = VGroup(*abc_discuss_arr).arrange(DOWN, buff=0.3)
         self.play(ReplacementTransform(shift_group, abc_discuss_group))
         self.play(Indicate(abc_discuss_arr[-1], scale_factor=1.2, color=GREEN))
-        self.wait(2)
+        self.wait(14.825)
 
         # 展开 (1-a)(1-b)(1-c) = 1
         expand_arr = [
@@ -130,7 +130,7 @@ class PKU2021StrongFoundationAbcProblem(Scene):
         expand_group = VGroup(*expand_arr).arrange(DOWN, buff=0.3)
         self.play(ReplacementTransform(abc_discuss_group, expand_group))
         self.play(Indicate(expand_arr[-1], scale_factor=1.2, color=BLUE))
-        self.wait(2)
+        self.wait(5.4)
 
         # 联立两式
         solve_arr = [
@@ -142,7 +142,7 @@ class PKU2021StrongFoundationAbcProblem(Scene):
         ]
         solve_group = VGroup(*solve_arr).arrange(DOWN, buff=0.4)
         self.play(ReplacementTransform(expand_group, solve_group))
-        self.wait(2)
+        self.wait(4.013)
 
         # 排除 S=0
         exclude_s_eq_0_arr = [
@@ -153,14 +153,16 @@ class PKU2021StrongFoundationAbcProblem(Scene):
         exclude_s_eq_0_group = VGroup(*exclude_s_eq_0_arr).arrange(DOWN, buff=0.4)
         self.play(ReplacementTransform(solve_group, exclude_s_eq_0_group))
         self.play(Indicate(exclude_s_eq_0_group[-1], scale_factor=1.2, color=YELLOW))
-        self.wait(2)
+        self.wait(6.537)
 
         postscript_arr = [
             Text("后记", font_size=60, color=YELLOW),
             Text("这是我第一次用 manim 做数学题解的视频", font_size=28),
-            Text("大佬们觉得这种展现形式与博客相比如何？", font_size=28),
-            Text("欢迎在评论区留言，谢谢观看~", font_size=28),
+            Text("大佬们觉得这种展现形式与博客相比如何？欢迎在评论区留言", font_size=28),
+            Text("喜欢本期视频的话，别忘了一键三连哦", font_size=28, color=PINK),
+            Text("谢谢观看~", font_size=28),
         ]
         postscript_group = VGroup(*postscript_arr).arrange(DOWN, buff=0.4)
         self.play(ReplacementTransform(exclude_s_eq_0_group, postscript_group))
-        self.wait(4)
+        # self.wait(11.275) # 一开始设的11秒多，但生成视频时加长了文案，却忘了改大这个数。下面改成20秒，但先不编译了
+        self.wait(20)
