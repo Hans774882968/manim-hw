@@ -7,14 +7,14 @@ class PKU2021StrongFoundationAbcProblem(Scene):
         title = Text("2021 北大强基：考察三元对称式", font_size=60, color=BLUE)
         subtitle_arr = [
             Text("题目来源： https://www.bilibili.com/video/BV1nh4y1M7h9", font_size=24, color=YELLOW),
-            Text("作者：hans7", font_size=24, color=YELLOW),
+            Text("作者：hans7", font_size=24, color=BLUE),
             Text("文字稿传送门：见视频简介", font_size=24, color=YELLOW)
         ]
         subtitle_group = VGroup(*subtitle_arr).arrange(DOWN, buff=0.2)
         subtitle_group.next_to(title, DOWN, buff=0.5)
         self.play(Write(title), run_time=1)
         self.play(FadeIn(subtitle_group, shift=DOWN))
-        self.play(Indicate(subtitle_arr[1], scale_factor=1.2, color=YELLOW))
+        self.play(Circumscribe(subtitle_arr[1], run_time=4, color=BLUE))
         self.wait(8.1)
         self.play(FadeOut(title, subtitle_group))
 
@@ -34,16 +34,17 @@ class PKU2021StrongFoundationAbcProblem(Scene):
         thought_arr = [
             Text("思想", font_size=60, color=YELLOW),
             Text("对于三元对称式的题，我们一般考虑用", font_size=28),
-            MathTex(r"a + b + c,\ ab + bc + ca,\ abc", font_size=28, color=BLUE),
-            Text("表示一切，所以我们要处理约束方程，弄出这3个式子", font_size=28),
+            MathTex(r"a + b + c,\ ab + bc + ca,\ abc", color=BLUE),
+            Text("表示一切，所以我们要让约束方程只由这3个式子组成", font_size=28),
         ]
         thought_group = VGroup(*thought_arr).arrange(DOWN, buff=0.3)
         self.play(ReplacementTransform(eqs, thought_group))
         self.play(Indicate(thought_arr[2], scale_factor=1.2, color=BLUE))
-        self.wait(13.2)
+        self.wait(13.625)
 
         # Step 1: 三式相加
         step1_arr = [
+            Text("简单的观察", font_size=60, color=YELLOW),
             Text("三式相加："),
             MathTex(r"a + b + c = ab + bc + ca + (a + b + c)"),
             Text("移项得"),
@@ -51,7 +52,7 @@ class PKU2021StrongFoundationAbcProblem(Scene):
         ]
         step1_group = VGroup(*step1_arr).arrange(DOWN, buff=0.3)
         self.play(ReplacementTransform(thought_group, step1_group))
-        self.wait(4.275)
+        self.wait(7.263)
 
         # Step 2: 分别乘 c, a, b
         step2_arr = [
@@ -74,7 +75,7 @@ class PKU2021StrongFoundationAbcProblem(Scene):
         sum_mult_group = VGroup(*sum_mult_arr).arrange(DOWN, buff=0.3)
         self.play(ReplacementTransform(step2_group, sum_mult_group))
         self.play(Indicate(sum_mult_arr[-1], scale_factor=1.2, color=GREEN))
-        self.wait(6.825)
+        self.wait(6.838)
 
         # Step 3: 展开 (a+b+c)^2 并代入 ab+bc+ca = 0
         square_arr = [
@@ -82,59 +83,59 @@ class PKU2021StrongFoundationAbcProblem(Scene):
             MathTex(r"(a + b + c)^2 = a^2 + b^2 + c^2 + 2(ab + bc + ca)"),
             Text("代入 ab+bc+ca = 0 得"),
             MathTex(r"(a + b + c)^2 = a^2 + b^2 + c^2", color=GREEN),
-            Text("结合上式得"),
+            Text("结合上一页的等式得"),
             MathTex(r"(a + b + c)^2 = -3abc", color=BLUE)
         ]
         square_group = VGroup(*square_arr).arrange(DOWN, buff=0.3)
         self.play(ReplacementTransform(sum_mult_group, square_group))
         self.play(Indicate(square_arr[-1], scale_factor=1.2, color=BLUE))
-        self.wait(11.987)
+        self.wait(12.812)
 
         # Step 4: 移项并相乘
         shift_arr = [
-            Text("为求出答案，我们还需要找1种方式构造出 abc"),
-            Text("为此，对原方程移项："),
+            Text("为求出答案，我们还需要一个关于 a+b+c 和 abc 的等式", font_size=28),
+            Text("为此，对原方程移项：", font_size=28),
             MathTex(r"a(1 - b) = c"),
             MathTex(r"b(1 - c) = a"),
             MathTex(r"c(1 - a) = b"),
-            Text("三式相乘得"),
+            Text("三式相乘得", font_size=28),
             MathTex(r"abc(1 - a)(1 - b)(1 - c) = abc", color=BLUE),
         ]
         shift_group = VGroup(*shift_arr).arrange(DOWN, buff=0.3)
         self.play(ReplacementTransform(square_group, shift_group))
         self.play(Indicate(shift_arr[-1], scale_factor=1.2, color=BLUE))
-        self.wait(14.15)
+        self.wait(15.975)
 
         # 讨论 abc 能否为 0
         abc_discuss_arr = [
+            MathTex(r"abc(1 - a)(1 - b)(1 - c) = abc", color=BLUE),
             Text("若 abc = 0，不妨设 a = 0", font_size=28),
             Text("代入得 a = b = c = 0 ，与“不全相等”矛盾！故", font_size=28, color=RED),
-            MathTex(r"abc \neq 0", color=GREEN)
+            MathTex(r"abc \neq 0", color=GREEN),
+            MathTex(r"(1 - a)(1 - b)(1 - c) = 1", color=GREEN),
         ]
         abc_discuss_group = VGroup(*abc_discuss_arr).arrange(DOWN, buff=0.3)
         self.play(ReplacementTransform(shift_group, abc_discuss_group))
         self.play(Indicate(abc_discuss_arr[-1], scale_factor=1.2, color=GREEN))
-        self.wait(14.825)
+        self.wait(15.113)
 
-        # 展开 (1-a)(1-b)(1-c) = 1
+        # 展开 (1 - a)(1 - b)(1 - c) = 1
         expand_arr = [
-            Text("因此："),
-            MathTex(r"(1 - a)(1 - b)(1 - c) = 1"),
-            Text("展开左边："),
+            MathTex(r"(1 - a)(1 - b)(1 - c) = 1", color=GREEN),
+            Text("展开左边：", font_size=36),
             MathTex(r"1 - (a + b + c) + (ab + bc + ca) - abc = 1"),
-            Text("代入 ab+bc+ca = 0 得"),
+            Text("代入 ab+bc+ca = 0 得", font_size=36),
             MathTex(r"1 - (a + b + c) - abc = 1", color=GREEN),
-            Text("化简得"),
-            MathTex(r"a + b + c = -abc", color=BLUE)
+            Text("化简，我们凑齐了需要的两个式子：", font_size=36),
+            MathTex(r"\begin{cases} (a + b + c)^2 = -3abc \\ a + b + c = -abc \end{cases}", color=BLUE),
         ]
         expand_group = VGroup(*expand_arr).arrange(DOWN, buff=0.3)
         self.play(ReplacementTransform(abc_discuss_group, expand_group))
         self.play(Indicate(expand_arr[-1], scale_factor=1.2, color=BLUE))
-        self.wait(5.4)
+        self.wait(9.437)
 
         # 联立两式
         solve_arr = [
-            Text("联立："),
             MathTex(r"\begin{cases} (a + b + c)^2 = -3abc \\ a + b + c = -abc \end{cases}"),
             Text("令 S = a + b + c ，则 S = -abc ，代入得"),
             MathTex(r"S^2 = -3abc = 3S \Rightarrow S^2 - 3S = 0"),
@@ -142,10 +143,11 @@ class PKU2021StrongFoundationAbcProblem(Scene):
         ]
         solve_group = VGroup(*solve_arr).arrange(DOWN, buff=0.4)
         self.play(ReplacementTransform(expand_group, solve_group))
-        self.wait(4.013)
+        self.wait(6.875)
 
         # 排除 S=0
         exclude_s_eq_0_arr = [
+            MathTex(r"S = 0 \text{ or } S = 3", font_size=60),
             Text("若 S = 0，则 abc = 0，导致 a = b = c = 0，"),
             Text("与题设矛盾，舍去。故："),
             MathTex(r"a + b + c = 3", font_size=60, color=YELLOW)
@@ -153,7 +155,7 @@ class PKU2021StrongFoundationAbcProblem(Scene):
         exclude_s_eq_0_group = VGroup(*exclude_s_eq_0_arr).arrange(DOWN, buff=0.4)
         self.play(ReplacementTransform(solve_group, exclude_s_eq_0_group))
         self.play(Indicate(exclude_s_eq_0_group[-1], scale_factor=1.2, color=YELLOW))
-        self.wait(6.537)
+        self.wait(5.975)
 
         postscript_arr = [
             Text("后记", font_size=60, color=YELLOW),
@@ -164,5 +166,7 @@ class PKU2021StrongFoundationAbcProblem(Scene):
         ]
         postscript_group = VGroup(*postscript_arr).arrange(DOWN, buff=0.4)
         self.play(ReplacementTransform(exclude_s_eq_0_group, postscript_group))
+        self.play(Circumscribe(postscript_group[-2], run_time=4, color=PINK))
+        self.play(Wiggle(postscript_group[-2]))
         # self.wait(11.275) # 一开始设的11秒多，但生成视频时加长了文案，却忘了改大这个数。下面改成20秒，但先不编译了
-        self.wait(20)
+        self.wait(16)
