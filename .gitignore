@@ -10,4 +10,8 @@ wheels/
 .venv
 
 # custom
-media/
+media/**
+# qwen 和 kimi 都说这么写，不确定有没有用。还搭配执行了 git add -f
+!media/**/*.kdenlive
+!media/**/*.ass
+!media/**/*.srt

@@ -22,7 +22,7 @@ class N2N2Mod12Eq0(Scene):
         self.play(Write(title_group), run_time=1)
         self.play(FadeIn(subtitle_group, shift=DOWN))
         self.play(Circumscribe(subtitle_arr[2], run_time=4, color=BLUE))
-        self.wait(16)
+        self.wait(17)
         self.play(FadeOut(title_group, subtitle_group))
 
     def show_method1(self):
@@ -32,7 +32,7 @@ class N2N2Mod12Eq0(Scene):
         method1_thought.next_to(method1_title, DOWN, buff=0.5)
         self.play(FadeIn(method1_title, shift=UP))
         self.play(Write(method1_thought))
-        self.wait(8) # “n=1 显然成立”
+        self.wait(16)  # “按照数学归纳法的套路”
         method1_expr_group = VGroup(
             MathTex(r"\frac{n^2(n^2-1)}{12}"),
             MathTex(r"= \frac{(k+1)^2k(k+2)}{12}"),
@@ -40,7 +40,7 @@ class N2N2Mod12Eq0(Scene):
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.3)
         method1_expr_group.next_to(method1_thought, DOWN, buff=0.5)
         self.play(Write(method1_expr_group))
-        self.wait(22) # “做差以后得到”
+        self.wait(16)  # “做差以后得到”
 
         method1_result_tex = MathTex(r"= \frac{4k^3+6k^2+2k}{12} = ", r"\frac{2k^3+3k^2+k}{6}", font_size=36)
         method1_res_expr = VGroup(
@@ -53,7 +53,7 @@ class N2N2Mod12Eq0(Scene):
         self.play(
             Create(res_frame_box),
         )
-        self.wait(27)
+        self.wait(22)  # “接下来看解法2”
         self.remove(res_frame_box)
         method1_to_remove = VGroup(method1_title, method1_res_expr)
         return method1_to_remove
@@ -68,7 +68,7 @@ class N2N2Mod12Eq0(Scene):
         method2_character_group.next_to(method2_title, DOWN, buff=0.5)
         method2_initial_view = VGroup(method2_title, method2_character_group)
         self.play(ReplacementTransform(method1_to_remove, method2_initial_view))
-        self.wait(14)
+        self.wait(16)  # “根据唯一分解定理”
 
         method2_thought_txt = MarkupText("根据<span foreground=\"#58C4DD\">唯一分解定理</span>，只需证它是3和4的倍数", font_size=36)
         method2_thought_txt.next_to(method2_title, DOWN, buff=0.5)
@@ -79,7 +79,7 @@ class N2N2Mod12Eq0(Scene):
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.3)
         method2_example_3.next_to(method2_thought_txt, DOWN, buff=0.5)
         self.play(Write(method2_example_3))
-        self.wait(19)
+        self.wait(21)  # “接下来的解法3”
         method2_to_remove = VGroup(method2_title, method2_thought_txt, method2_example_3)
         return method2_to_remove
 
@@ -95,7 +95,7 @@ class N2N2Mod12Eq0(Scene):
         self.play(FadeOut(method2_to_remove))
         self.play(FadeIn(method3_title, shift=UP))
         self.play(Write(method3_thought_group))
-        self.wait(22)
+        self.wait(25)  # “我们拿出”
 
         method3_thought2_group = VGroup(
             Text("拿出 (n-1)n(n+1) ，分子分母都乘2，让剩余部分为 2n", font_size=36),
@@ -111,10 +111,10 @@ class N2N2Mod12Eq0(Scene):
         method3_last_view.arrange(DOWN, aligned_edge=LEFT, buff=0.3)
         method3_last_view.next_to(method3_title, DOWN, buff=0.5)
         self.play(ReplacementTransform(method3_thought_group, method3_thought2_group))
-        self.wait(12)
+        self.wait(14)  # “最后用组合数的定义式”
         self.play(Write(method3_res_expr))
         self.play(Indicate(method3_res_expr, scale_factor=1.2, color=BLUE))
-        self.wait(8)
+        self.wait(10)  # “由解法3我们可以出”
         method3_to_remove = VGroup(method3_title, method3_last_view)
         return method3_to_remove
 
@@ -128,7 +128,7 @@ class N2N2Mod12Eq0(Scene):
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.3)
         method3_ext1_stmt.next_to(method3_ext1_title, DOWN, buff=0.5)
         self.play(Write(method3_ext1_stmt))
-        self.wait(8)
+        self.wait(10)  # “同样的手法，”
 
         method3_res_expr = VGroup(
             MathTex(r"= \frac{(n-3)(n-2)(n-1)n(n+1)(n+2)}{720} + \frac{(n-2)(n-1)n(n+1)(n+2)(n+3)}{720}", font_size=28, color=BLUE),
@@ -142,7 +142,7 @@ class N2N2Mod12Eq0(Scene):
         method3_ext1_res_group.next_to(method3_ext1_stmt, DOWN, buff=0.5)
         self.play(Write(method3_ext1_res_group))
         self.play(Indicate(method3_res_expr, scale_factor=1.2, color=BLUE))
-        self.wait(12)
+        self.wait(14)  # “接下来我们继续扩展”
 
         method3_ext1_to_remove = VGroup(method3_ext1_title, method3_ext1_stmt, method3_ext1_res_group)
         return method3_ext1_to_remove
@@ -157,7 +157,7 @@ class N2N2Mod12Eq0(Scene):
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.3)
         method3_ext2_stmt.next_to(method3_ext2_title, DOWN, buff=0.5)
         self.play(Write(method3_ext2_stmt))
-        self.wait(14)
+        self.wait(16)  # “如果一开始没有头绪”
 
         js_code = Code(
             code_string='''for (let n = 1; n <= 60; n++) {
@@ -171,7 +171,7 @@ class N2N2Mod12Eq0(Scene):
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.3)
         method3_ext2_thought.next_to(method3_ext2_stmt, DOWN, buff=0.5)
         self.play(Write(method3_ext2_thought))
-        self.wait(8)
+        self.wait(10)  # “发现 n = 5k+2”
 
         method3_ext2_discovery = VGroup(
             Text("n = 5k+2 时余48，其余情况整除")
@@ -181,7 +181,7 @@ class N2N2Mod12Eq0(Scene):
             VGroup(method3_ext2_stmt, method3_ext2_thought),
             method3_ext2_discovery
         ))
-        self.wait(5)  # 等到“我们不难展开得到屏幕中的式子”开始
+        self.wait(14)  # “我们不难展开得到屏幕中的式子”
 
         method3_ext2_expand = VGroup(
             MathTex(r"\frac{n^2(n^2-1)(n+2)}{120}", font_size=36),
@@ -191,7 +191,7 @@ class N2N2Mod12Eq0(Scene):
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.3)
         method3_ext2_expand.next_to(method3_ext2_discovery, DOWN, buff=0.5)
         self.play(Write(method3_ext2_expand))
-        self.wait(3)
+        self.wait(5)  # “我们发现 n = 5k+2 时”
 
         method3_ext2_result_expr = MathTex(r"C_{n+2}^5 + \frac{2}{5}C_{n+2}^4", color=BLUE),
         method3_ext2_res = VGroup(
@@ -205,7 +205,7 @@ class N2N2Mod12Eq0(Scene):
         self.play(
             Create(res_frame_box),
         )
-        self.wait(10)
+        self.wait(12)  # “这期视频是上个月的存稿”
         self.remove(res_frame_box)
 
         method3_ext2_to_remove = VGroup(method3_ext2_title, method3_ext2_discovery, method3_ext2_res)
@@ -228,7 +228,7 @@ class N2N2Mod12Eq0(Scene):
             Wiggle(postscript_group[-3]),
             Wiggle(postscript_group[-2])
         )
-        self.wait(22)
+        self.wait(25)
 
     def construct(self):
         self.show_title()
