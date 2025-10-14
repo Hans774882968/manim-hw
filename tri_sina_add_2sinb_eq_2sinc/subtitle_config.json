@@ -1,0 +1,29 @@
+{
+  "srt_file": "media\\bili\\tri_sina_add_2sinb_eq_2sinc\\tri_sina_add_2sinb_eq_2sinc.srt",
+  "replacements": [
+    [
+      "汉斯",
+      "Hans"
+    ],
+    [
+      "sine",
+      "sin"
+    ],
+    [
+      "a的一半等于c减b",
+      "a/2 = c-b"
+    ],
+    [
+      "负1",
+      "-1"
+    ],
+    [
+      "(-1,0",
+      "(-1,0)"
+    ],
+    [
+      "二分之一",
+      "1/2"
+    ]
+  ]
+}
