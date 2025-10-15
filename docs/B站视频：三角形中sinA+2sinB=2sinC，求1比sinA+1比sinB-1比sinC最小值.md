@@ -38,6 +38,14 @@
 
 ```bash
 edge-tts --voice zh-CN-XiaoxiaoNeural --file docs\视频文字稿：tri_sina_add_2sinb_eq_2sinc-主视频.md --write-media media\bili\tri_sina_add_2sinb_eq_2sinc\tri_sina_add_2sinb_eq_2sinc.mp3 --write-subtitles media\bili\tri_sina_add_2sinb_eq_2sinc\tri_sina_add_2sinb_eq_2sinc.srt
+
+edge-tts --voice zh-CN-XiaoxiaoNeural --file docs\视频文字稿：tri_sina_add_2sinb_eq_2sinc-纯三角变换.md --write-media media\bili\tri_sina_add_2sinb_eq_2sinc\tri_2sinc_sol2.mp3 --write-subtitles media\bili\tri_sina_add_2sinb_eq_2sinc\tri_2sinc_sol2.srt
+```
+
+顺便做个音频：
+
+```bash
+edge-tts --voice zh-CN-XiaoxiaoNeural --text "谢谢大佬们的三连加关注" --write-media D:\视频制作素材\三连+关注.mp3 --write-subtitles D:\视频制作素材\三连+关注.srt
 ```
 
 BGM仍然用《羽根》

@@ -1,0 +1,25 @@
+{
+  "srt_file": "media\\bili\\tri_sina_add_2sinb_eq_2sinc\\tri_2sinc_sol2.srt",
+  "replacements": [
+    [
+      "cosine",
+      "cos"
+    ],
+    [
+      "sine",
+      "sin"
+    ],
+    [
+      "减",
+      "-"
+    ],
+    [
+      "比2",
+      "/2"
+    ],
+    [
+      "C-B 除以2",
+      "(C-B)/2"
+    ]
+  ]
+}
