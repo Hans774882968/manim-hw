@@ -1,0 +1,25 @@
+{
+  "srt_file": "media\\bili\\tri_sina_add_2sinb_eq_2sinc\\tri_2sinc_sol1.srt",
+  "replacements": [
+    [
+      "cosine",
+      "cos"
+    ],
+    [
+      "b平方加c平方,",
+      "b平方加c平方"
+    ],
+    [
+      "b平方加c平方除以 bc",
+      "(b^2+c^2)/(bc)"
+    ],
+    [
+      "所以答案是,",
+      "所以答案是 "
+    ],
+    [
+      "根号33 除以 3",
+      "sqrt(33)/3"
+    ]
+  ]
+}

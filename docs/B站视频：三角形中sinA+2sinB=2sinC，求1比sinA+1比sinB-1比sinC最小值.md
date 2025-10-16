@@ -40,6 +40,8 @@
 edge-tts --voice zh-CN-XiaoxiaoNeural --file docs\视频文字稿：tri_sina_add_2sinb_eq_2sinc-主视频.md --write-media media\bili\tri_sina_add_2sinb_eq_2sinc\tri_sina_add_2sinb_eq_2sinc.mp3 --write-subtitles media\bili\tri_sina_add_2sinb_eq_2sinc\tri_sina_add_2sinb_eq_2sinc.srt
 
 edge-tts --voice zh-CN-XiaoxiaoNeural --file docs\视频文字稿：tri_sina_add_2sinb_eq_2sinc-纯三角变换.md --write-media media\bili\tri_sina_add_2sinb_eq_2sinc\tri_2sinc_sol2.mp3 --write-subtitles media\bili\tri_sina_add_2sinb_eq_2sinc\tri_2sinc_sol2.srt
+
+edge-tts --voice zh-CN-XiaoxiaoNeural --file docs\视频文字稿：tri_sina_add_2sinb_eq_2sinc-正弦定理+余弦定理.md --write-media media\bili\tri_sina_add_2sinb_eq_2sinc\tri_2sinc_sol1.mp3 --write-subtitles media\bili\tri_sina_add_2sinb_eq_2sinc\tri_2sinc_sol1.srt
 ```
 
 顺便做个音频：
@@ -54,4 +56,40 @@ BGM仍然用《羽根》
 
 ## B站发布：标题、标签、简介…
 
-TODO
+标题：《一道颇难的解三角形题： sinA+2sinB=2sinC，求 min(1/sinA + 1/sinB - 1/sinC)》
+
+标签：新学期多点新知识, 高中数学, 学渣逆袭, 高中生必看, 双曲线, manim, 解三角形, 三角恒等变换, 三角函数
+
+```
+今天我们来看这道颇难的解三角形题： sinA+2sinB=2sinC，求 min(1/sinA + 1/sinB - 1/sinC) 。这题至少有3种解法。个人体感，计算量：双曲线法 < 解三角形法 < 纯三角变换。对注意力的要求：双曲线法 < 解三角形法 < 纯三角变换。
+题目来源： https://www.bilibili.com/video/BV12DJXzoEgK
+那道更简单的题： https://zhidao.baidu.com/question/744659451359792932.html
+manim 源码传送门：
+- P1: https://github.com/Hans774882968/manim-hw/blob/main/tri_sina_add_2sinb_eq_2sinc/tri_sina_add_2sinb_eq_2sinc.py
+- P2: https://github.com/Hans774882968/manim-hw/blob/main/tri_sina_add_2sinb_eq_2sinc/tri_2sinc_sol1.py
+- P3: https://github.com/Hans774882968/manim-hw/blob/main/tri_sina_add_2sinb_eq_2sinc/tri_2sinc_sol2.py
+文字稿： https://hans774882968.github.io/teaching-plan-analytic-geometry/blog/%E4%B8%89%E8%A7%92%E5%BD%A2%E4%B8%AD%E6%9C%89%20%24%5Csin%20A%2B2%5Csin%20B%3D2%5Csin%20C%24%20%EF%BC%8C%E6%B1%82%20%24%5Cfrac%7B1%7D%7B%5Csin%20A%7D%2B%5Cfrac%7B1%7D%7B%5Csin%20B%7D-%5Cfrac%7B1%7D%7B%5Csin%20C%7D%24%20%E6%9C%80%E5%B0%8F%E5%80%BC
+旁白模型：edge-tts 的 zh-CN-XiaoxiaoNeural
+字体：站酷快乐体 https://ziti.xxriji.cn/
+```
+
+章节（仅P1有，P2、P3无）：
+
+```
+00:00 片头
+00:13 题干
+00:42 思想
+01:08 法3：双曲线
+02:06 后记
+```
+
+3个P的互动引导都加在末尾
+
+投票弹幕仅加在P1：00:18
+
+你觉得这题难度如何
+
+- 太水了
+- 一般般
+- 踮踮脚能够到
+- 踮脚也够不着
