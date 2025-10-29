@@ -10,8 +10,15 @@ wheels/
 .venv
 
 # custom
-media/**
+media/videos/**/*.txt
+media/**/*.tex
+media/**/*.svg
+media/**/*.mp3
+media/**/*.mp4
+media/**/*.png
+# 放弃以下写法，改为以上写法
+# media/**
 # qwen 和 kimi 都说这么写，不确定有没有用。还搭配执行了 git add -f
-!media/**/*.kdenlive
-!media/**/*.ass
-!media/**/*.srt
+# !media/**/*.kdenlive
+# !media/**/*.ass
+# !media/**/*.srt
