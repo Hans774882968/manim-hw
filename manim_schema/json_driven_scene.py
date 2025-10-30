@@ -1,31 +1,47 @@
 from manim import *
 import json
 import argparse
-from typing import List
+from typing import List, Dict, Any, Union
 
-schema_data = None
+DEFAULT_FONT_SIZE = {
+    "title": 60,
+    "subtitle": 48,
+    "text": 36,
+    "math_tex": 48,
+    "footer": 24,
+}
+DEFAULT_COLORS = {
+    "title": BLUE,
+    "section_title": YELLOW,
+    "footer_text": YELLOW,
+    "footer_author": "#58C4DD",
+}
+BACKGROUND_IMAGE_PATH = "assets/南澳岛.jpg"
+BACKGROUND_OPACITY = 0.4
+
 DIRECTION_MAP = {"UP": UP, "RIGHT": RIGHT, "DOWN": DOWN, "LEFT": LEFT}
 
 
-def get_arrange_args(arrange_config):
-    arrange_kwargs = {
-        k: v for k, v in arrange_config.items()
-        if k != "direction" and k != "aligned_edge"
-    }
-    aligned_edge = DIRECTION_MAP.get(arrange_config.get("aligned_edge", "").upper(), None)
+def filter_kwargs(elem: Dict[str, Any], exclude_keys: set) -> Dict[str, Any]:
+    return {k: v for k, v in elem.items() if k not in exclude_keys}
+
+
+def get_arrange_args(arrange_config: Dict[str, Any]):
+    arrange_kwargs = filter_kwargs(arrange_config, {"direction", "aligned_edge"})
+    aligned_edge = DIRECTION_MAP.get(arrange_config.get("aligned_edge", "").upper())
     if aligned_edge is not None:
         arrange_kwargs["aligned_edge"] = aligned_edge
     direction = DIRECTION_MAP[arrange_config.get("direction", "DOWN").upper()]
     return direction, arrange_kwargs
 
 
-def create_math_tex(math_tex_str: str | List[str], kwargs):
+def create_math_tex(math_tex_str: Union[str, List[str]], kwargs: Dict[str, Any]) -> MathTex:
     if isinstance(math_tex_str, str):
         return MathTex(math_tex_str, **kwargs)
     return MathTex(*math_tex_str, **kwargs)
 
 
-def math_tex_post_creation(math_tex: MathTex, elem):
+def apply_math_tex_post_processing(math_tex: MathTex, elem: Dict[str, Any]) -> MathTex:
     sub_tex, tex_color = elem.get("set_color_by_tex", (None, None))
     if sub_tex and tex_color:
         math_tex.set_color_by_tex(sub_tex, tex_color)
@@ -35,28 +51,25 @@ def math_tex_post_creation(math_tex: MathTex, elem):
     return math_tex
 
 
-def build_mobject_from_elem(elem: str | dict):
+def build_mobject_from_elem(elem: Union[str, Dict[str, Any]]) -> Mobject:
     # 支持字符串简写，给配置文件瘦身
     if isinstance(elem, str):
-        return Text(elem, font_size=36)
+        return Text(elem, font_size=DEFAULT_FONT_SIZE["text"])
     # 叶子节点
     if "type" in elem:
         elem_type = elem.get("type", "text")
         elem_content = elem.get("content", "")
-
-        kwargs = {
-            k: v for k, v in elem.items()
-            if k not in ("type", "content", "set_color_by_tex", "set_color_by_tex_to_color_map")
-        }
+        exclude_keys = {"type", "content", "set_color_by_tex", "set_color_by_tex_to_color_map"}
+        kwargs = filter_kwargs(elem, exclude_keys)
 
         if "font_size" not in kwargs:
-            kwargs["font_size"] = 48 if elem_type == "math_tex" else 36
+            kwargs["font_size"] = DEFAULT_FONT_SIZE.get(elem_type, DEFAULT_FONT_SIZE["text"])
 
         if elem_type == "text":
             return Text(elem_content, **kwargs)
         elif elem_type == "math_tex":
             math_tex = create_math_tex(elem_content, kwargs)
-            math_tex_post_creation(math_tex, elem)
+            math_tex = apply_math_tex_post_processing(math_tex, elem)
             return math_tex
         elif elem_type == "markup_text":
             return MarkupText(elem_content, **kwargs)
@@ -66,7 +79,6 @@ def build_mobject_from_elem(elem: str | dict):
         sub_elements = elem["elements"]
         sub_mobjects = [build_mobject_from_elem(e) for e in sub_elements]
 
-        # 处理 arrange 配置
         arrange_config = elem.get("arrange", {})
         direction, arrange_kwargs = get_arrange_args(arrange_config)
 
@@ -77,33 +89,38 @@ def build_mobject_from_elem(elem: str | dict):
     raise ValueError(f"Invalid element: must have 'type' (leaf) or 'elements' (nested vgroup). Got: {elem}")
 
 
-def get_title_group(title_data, is_subtitle_mode=False, **kwargs):
+def build_title_group(title_data: Union[str, List[str]], is_subtitle_mode: bool = False, **kwargs) -> Mobject:
     if isinstance(title_data, str):
-        return Text(title_data, font_size=60, **kwargs)
+        return Text(title_data, font_size=DEFAULT_FONT_SIZE["title"], **kwargs)
     if not isinstance(title_data, list):
-        raise ValueError("title_data must be a string or string[]")
-    text_list = [
-        Text(t, font_size=48 if i else 60, **kwargs) for i, t in enumerate(title_data)
-    ] if is_subtitle_mode else [Text(t, font_size=60, **kwargs) for t in title_data]
+        raise ValueError("title_data must be str or List[str]")
+
+    if is_subtitle_mode:
+        text_list = [
+            Text(t, font_size=(DEFAULT_FONT_SIZE["subtitle"] if i else DEFAULT_FONT_SIZE["title"]), **kwargs)
+            for i, t in enumerate(title_data)
+        ]
+    else:
+        text_list = [Text(t, font_size=DEFAULT_FONT_SIZE["title"], **kwargs) for t in title_data]
     return VGroup(*text_list).arrange(DOWN, buff=0.2)
 
 
-class JsonDrivenScene(Scene):
+class OriginalJsonScene(Scene):
     def show_bg(self):
-        background = ImageMobject("assets/南澳岛.jpg")
-        background.set_opacity(0.4)
+        background = ImageMobject(BACKGROUND_IMAGE_PATH)
+        background.set_opacity(BACKGROUND_OPACITY)
         background.stretch_to_fit_width(config.frame_width)
         background.stretch_to_fit_height(config.frame_height)
         self.add(background)
 
     def show_title(self):
-        title_data = schema_data["title"]
-        title_group = get_title_group(title_data, color=BLUE)
+        title_data = self.schema_data["title"]
+        title_group = build_title_group(title_data, color=BLUE)
         subtitle_arr = [
-            Text("题源： https://www.bilibili.com/video/BV12DJXzoEgK", font_size=24, color=YELLOW),
-            MarkupText("作者：<span foreground=\"#58C4DD\">hans7</span>", font_size=24),
-            Text("我们必须想象，做题人是幸福的", font_size=24, color=BLUE),
-            Text("文字稿传送门：见视频简介", font_size=24, color=YELLOW),
+            Text("题源： https://www.bilibili.com/video/BV12DJXzoEgK", font_size=DEFAULT_FONT_SIZE["footer"], color=YELLOW),
+            MarkupText("作者：<span foreground=\"#58C4DD\">hans7</span>", font_size=DEFAULT_FONT_SIZE["footer"]),
+            Text("我们必须想象，做题人是幸福的", font_size=DEFAULT_FONT_SIZE["footer"], color=BLUE),
+            Text("文字稿传送门：见视频简介", font_size=DEFAULT_FONT_SIZE["footer"], color=YELLOW),
         ]
         subtitle_group = VGroup(*subtitle_arr).arrange(DOWN, buff=0.2)
         subtitle_group.next_to(title_group, DOWN, buff=0.5)
@@ -117,17 +134,29 @@ class JsonDrivenScene(Scene):
         self.wait(17)
         self.play(FadeOut(title_group, subtitle_group))
 
+    def play_animation_and_wait(self, vgroups_in_block, vg_data_list):
+        for vg, vg_data in zip(vgroups_in_block, vg_data_list):
+            self.play(Write(vg))
+            vg_wait_time = vg_data.get("wait", 0)
+            if vg_wait_time > 0:
+                self.wait(vg_wait_time)
+
     def construct(self):
+        self.schema_data = self.get_schema_data()
         self.show_bg()
         self.show_title()
 
-        sections = schema_data["sections"]
+        sections = self.schema_data["sections"]
         current_mobjects = VGroup()  # 包含标题 + 当前 block 所有 vgroup
 
         for sec_idx, section in enumerate(sections):
             title_data = section["title"]
             is_subtitle_mode = section.get("subtitle_mode", False)
-            title_mob = get_title_group(title_data, is_subtitle_mode=is_subtitle_mode, color=YELLOW)
+            title_mob = build_title_group(
+                title_data,
+                is_subtitle_mode=is_subtitle_mode,
+                color=DEFAULT_COLORS["section_title"]
+            )
             title_mob.to_edge(UP, buff=0.5)
 
             if sec_idx == 0:
@@ -141,21 +170,14 @@ class JsonDrivenScene(Scene):
 
             for blk_idx, block in enumerate(blocks):
                 vgroups_in_block = []
-
-                # 构建当前 block 的所有 VGroup
                 vg_data_list = block.get("vgroups", [])
                 for vg_data in vg_data_list:
                     arrange_config = vg_data.get("arrange", {})
                     direction, arrange_kwargs = get_arrange_args(arrange_config)
 
                     elements = vg_data.get("elements", [])
-                    display_elements = []
-                    for elem in elements:
-                        m_obj = build_mobject_from_elem(elem)
-                        display_elements.append(m_obj)
-
-                    vgroup = VGroup(*display_elements)
-                    vgroup.arrange(direction, **arrange_kwargs)
+                    display_elements = [build_mobject_from_elem(elem) for elem in elements]
+                    vgroup = VGroup(*display_elements).arrange(direction, **arrange_kwargs)
                     vgroups_in_block.append(vgroup)
 
                 # 第一个 vgroup 在标题下方，后续 vgroup 依次堆叠在前一个下方
@@ -168,11 +190,7 @@ class JsonDrivenScene(Scene):
 
                 # 第一个 block 逐个 Write
                 if blk_idx == 0:
-                    for vg, vg_data in zip(vgroups_in_block, vg_data_list):
-                        self.play(Write(vg))
-                        vg_wait_time = vg_data.get("wait", 0)
-                        if vg_wait_time > 0:
-                            self.wait(vg_wait_time)
+                    self.play_animation_and_wait(vgroups_in_block, vg_data_list)
                 else:
                     # 后续 block 先用第一个 vgroup 替换上一个 block 的全部内容
                     self.play(ReplacementTransform(prev_page, vgroups_in_block[0]))
@@ -182,11 +200,7 @@ class JsonDrivenScene(Scene):
                     # 然后 Write 剩余的 vgroup（如果有）
                     vgroups_in_block1 = vgroups_in_block[1:]
                     vg_data_list1 = vg_data_list[1:]
-                    for vg1, vg_data1 in zip(vgroups_in_block1, vg_data_list1):
-                        self.play(Write(vg1))
-                        vg_wait_time = vg_data1.get("wait", 0)
-                        if vg_wait_time > 0:
-                            self.wait(vg_wait_time)
+                    self.play_animation_and_wait(vgroups_in_block1, vg_data_list1)
 
                 prev_page = current_page
                 current_mobjects = VGroup(title_mob, current_page)
@@ -199,11 +213,12 @@ class JsonDrivenScene(Scene):
             if section_wait_time > 0:
                 self.wait(section_wait_time)
 
+    def get_schema_data(self) -> Dict[str, Any]:
+        raise NotImplementedError("Subclasses must implement get_schema_data or inject schema_data")
 
-def main(scene_cfg=None):
-    global schema_data
 
-    parser = argparse.ArgumentParser(description="批量替换字幕文件中的文本")
+def main(scene_cfg: Dict[str, Any] = None):
+    parser = argparse.ArgumentParser(description="JSON-driven Manim scene renderer")
     parser.add_argument(
         "--config",
         "-c",
@@ -230,6 +245,13 @@ def main(scene_cfg=None):
         json_file_path = args.config
         with open(json_file_path, 'r', encoding='utf-8') as f:
             schema_data = json.load(f)
+    else:
+        raise ValueError("Either scene_cfg or --config must be provided")
+
+    # 注入 schema_data 到 Scene ，避免全局变量
+    class JsonDrivenScene(OriginalJsonScene):
+        def get_schema_data(self):
+            return schema_data
 
     output_file = schema_data["output_file"]
     config.output_file = output_file

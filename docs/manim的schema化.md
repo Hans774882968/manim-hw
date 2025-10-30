@@ -16,6 +16,32 @@
 
 > 大佬，请你帮我写一个TypeScript语法的以上代码支持输入的数据结构的类型定义
 
+## 支持Python字典透传诸多参数
+
+```markdown
+大佬，请帮我把下面的代码改成：把elem除了type和content外的所有属性透传给Text或MathTex类
+
+很好，大佬。接下来请帮我把下面代码里的arrange方法改成从vg_data的arrange属性（一个字典）透传
+
+for vg_data in block["vgroups"]:
+    direction = DIRECTION_MAP[vg_data.get("direction", "DOWN")]
+    aligned_edge = ALIGN_EDGE_MAP.get(vg_data.get("aligned_edge", "LEFT"), LEFT)
+    # 省略代码
+    vgroup = VGroup(*display_elements)
+    vgroup.arrange(direction, aligned_edge=aligned_edge, buff=0.4)
+    vgroups_in_block.append(vgroup)
+```
+
+## 新增递归能力
+
+```markdown
+大佬，现在我项目的代码`manim_schema\json_driven_scene.py`如下，它可以正常工作。接下来请你帮我在这份代码的基础上新增功能：支持vg_data的elements数组的每个元素传入现在这种（叶子），也支持继续传入vgroup（支持的属性和现有代码的一样）。这样就形成一个树状结构。
+
+配套的可以工作的调用代码`henan_2610_t14\henan_2610_t14.py`：
+
+代码执行的命令是：`uv run henan_2610_t14\henan_2610_t14.py`
+```
+
 ## 试水：试着让LLM根据我的博客生成`henan_2610_t14`的代码
 
 ```markdown
@@ -32,4 +58,11 @@
 
 博客“法2”之后的原文：
 
+```
+
+## Code Review
+
+```markdown
+大佬，我有一段manim代码，请你帮我进行code review，并给出修改后的代码。要求：
+1. 代码符合DRY原则，重复逻辑抽象为函数、类等。
 ```
