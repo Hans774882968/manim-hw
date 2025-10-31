@@ -14,7 +14,7 @@ scene_cfg = {
     'sections': [
         {
             'title': '题干',
-            'wait': 10,
+            'wait': 12,  # 注意力极其涣散的
             'blocks': [
                 {
                     'vgroups': [
@@ -50,11 +50,11 @@ scene_cfg = {
         },
         {
             'title': '碎碎念',
-            'wait': 10,
             'blocks': [
                 {
                     'vgroups': [
                         {
+                            'wait': 29,  # 看到约束方程的对称性以后
                             'elements': [
                                 {
                                     'type': 'text',
@@ -69,7 +69,21 @@ scene_cfg = {
                                     'font_size': 48
                                 }
                             ]
-                        }
+                        },
+                        {
+                            'wait': 14,  # 化简方法1
+                            'elements': [
+                                {
+                                    'type': 'math_tex',
+                                    'content': r'\frac{\cos B}{\cos A}=\frac{1+\sin B}{1+\sin A}',
+                                },
+                                {
+                                    'type': 'markup_text',
+                                    'content': '<span foreground="#58C4DD">对称性</span> → A = B！',
+                                    'font_size': 48,
+                                },
+                            ]
+                        },
                     ]
                 }
             ]
@@ -80,10 +94,9 @@ scene_cfg = {
                 '法1：万能公式（不需要注意力）'
             ],
             'subtitle_mode': True,
-            'wait': 10,
             'blocks': [
                 {
-                    'wait': 5,
+                    'wait': 15,  # 交叉相乘，就
                     'vgroups': [
                         {
                             'arrange': {'aligned_edge': 'left'},
@@ -113,7 +126,7 @@ scene_cfg = {
                                     'elements': [
                                         {
                                             'type': 'markup_text',
-                                            'content': '则<span foreground=\"#58C4DD\">约束方程</span>',
+                                            'content': '则<span foreground="#58C4DD">约束方程</span>',
                                         },
                                         {
                                             'type': 'math_tex',
@@ -126,7 +139,6 @@ scene_cfg = {
                     ]
                 },
                 {
-                    'wait': 5,
                     'vgroups': [
                         {
                             'arrange': {'direction': 'right'},
@@ -138,7 +150,7 @@ scene_cfg = {
                             ]
                         },
                         {
-                            'wait': 5,
+                            'wait': 12,  # 于是得到屏幕里被框起来的式子
                             'arrange': {'direction': 'right'},
                             'elements': [
                                 '因为',
@@ -150,20 +162,27 @@ scene_cfg = {
                             ]
                         },
                         {
+                            'wait': 8,  # 因为半角的范围
                             'elements': [
                                 {
+                                    'id': 'frame_box_eq1',
                                     'type': 'math_tex',
-                                    'content': r'(u+1)(v-1)=(v+1)(u-1)'
+                                    'content': r'(u+1)(v-1)=(v+1)(u-1)',
+                                    'color': 'BLUE'
                                 },
                                 {
                                     'type': 'math_tex',
                                     'content': r'\Rightarrow uv-u+v-1=uv-v+u-1=0 \Rightarrow u=v'
                                 }
+                            ],
+                            'anime': [
+                                {'type': 'surrounding_rectangle', 'target': 'frame_box_eq1'},
                             ]
-                        }
+                        },
                     ]
                 },
                 {
+                    'wait': 5.5,  # 方法2：纯三角变换
                     'vgroups': [
                         {
                             'elements': [
@@ -184,12 +203,11 @@ scene_cfg = {
                 '法2：纯三角变换（不需要注意力）'
             ],
             'subtitle_mode': True,
-            'wait': 10,
             'blocks': [
                 {
                     'vgroups': [
                         {
-                            'wait': 5,
+                            'wait': 13,  # 右边标蓝的可以和差化积
                             'arrange': {'aligned_edge': 'left'},
                             'elements': [
                                 {
@@ -198,12 +216,14 @@ scene_cfg = {
                                 },
                                 {
                                     'type': 'math_tex',
-                                    'content': r'=\cos A+\sin B\cos A \Rightarrow \sin (A-B)=\cos A-\cos B'
+                                    'content': r'=\cos A+\sin B\cos A \Rightarrow \sin (A-B)=\cos A-\cos B',
+                                    'substrings_to_isolate': (r'\cos A-\cos B',),
+                                    'set_color_by_tex': (r'\cos A-\cos B', 'BLUE'),
                                 }
                             ]
                         },
                         {
-                            'wait': 5,
+                            'wait': 7,  # 对左边用二倍角公式
                             'arrange': {'aligned_edge': 'left'},
                             'elements': [
                                 '和差化积：',
@@ -216,7 +236,7 @@ scene_cfg = {
                     ]
                 },
                 {
-                    'wait': 5,
+                    'wait': 15,  # 其实这里已经可以通过
                     'vgroups': [
                         {
                             'arrange': {'aligned_edge': 'left'},
@@ -237,7 +257,7 @@ scene_cfg = {
                     ]
                 },
                 {
-                    'wait': 5,
+                    'wait': 24,  # 这就不需要任何范围分析了
                     'vgroups': [
                         {
                             'arrange': {'aligned_edge': 'left'},
@@ -256,6 +276,7 @@ scene_cfg = {
                     ]
                 },
                 {
+                    'wait': 6,  # 方法3：几何意义
                     'vgroups': [
                         {
                             'arrange': {'direction': 'right'},
@@ -291,10 +312,9 @@ scene_cfg = {
                 '法3：数形结合（需要注意力）'
             ],
             'subtitle_mode': True,
-            'wait': 10,
             'blocks': [
                 {
-                    'wait': 5,
+                    'wait': 20,  # 熟悉参数方程的同学
                     'vgroups': [
                         {
                             'arrange': {'aligned_edge': 'left'},
@@ -336,6 +356,7 @@ scene_cfg = {
                     ]
                 },
                 {
+                    'wait': 12,  # 方法4
                     'vgroups': [
                         {
                             'elements': [
@@ -361,10 +382,9 @@ scene_cfg = {
                 '法4：用二倍角公式拆开（需要注意力）'
             ],
             'subtitle_mode': True,
-            'wait': 10,
             'blocks': [
                 {
-                    'wait': 5,
+                    'wait': 20,  # 于是我们可以直接消掉
                     'vgroups': [
                         {
                             'arrange': {'direction': 'right'},
@@ -377,7 +397,6 @@ scene_cfg = {
                             ]
                         },
                         {
-                            'wait': 5,
                             'arrange': {'aligned_edge': 'left'},
                             'elements': [
                                 '右边：',
@@ -396,15 +415,21 @@ scene_cfg = {
                     ]
                 },
                 {
+                    'wait': 16,  # 拿到角A=角B后
                     'vgroups': [
                         {
                             'arrange': {'direction': 'right'},
                             'elements': [
                                 '把两边的加法消掉：',
                                 {
+                                    'id': 'method4_eq1',
                                     'type': 'math_tex',
-                                    'content': r'\frac{\cos \frac{B}{2}-\sin \frac{B}{2}}{\cos \frac{A}{2}-\sin \frac{A}{2}}=\frac{\cos \frac{B}{2}+\sin \frac{B}{2}}{\cos \frac{A}{2}+\sin \frac{A}{2}}'
+                                    'content': r'\frac{\cos \frac{B}{2}-\sin \frac{B}{2}}{\cos \frac{A}{2}-\sin \frac{A}{2}}=\frac{\cos \frac{B}{2}+\sin \frac{B}{2}}{\cos \frac{A}{2}+\sin \frac{A}{2}}',
+                                    'color': 'BLUE'
                                 }
+                            ],
+                            'anime': [
+                                {'type': 'indicate', 'target': 'method4_eq1'}
                             ]
                         },
                         {
@@ -432,10 +457,9 @@ scene_cfg = {
         },
         {
             'title': '题解收尾',
-            'wait': 10,
             'blocks': [
                 {
-                    'wait': 5,
+                    'wait': 12,  # 在这里换个元
                     'vgroups': [
                         {
                             'arrange': {'aligned_edge': 'left'},
@@ -452,6 +476,7 @@ scene_cfg = {
                     ]
                 },
                 {
+                    'wait': 24,  # 我是Hans，我正
                     'vgroups': [
                         {
                             'arrange': {'direction': 'right'},
@@ -499,10 +524,14 @@ scene_cfg = {
                             'elements': [
                                 '处分别取得最小、最大值，所求为',
                                 {
+                                    'id': 'final_res',
                                     'type': 'math_tex',
                                     'content': r'(1,\ \sqrt{2}+1]',
                                     'color': 'BLUE'
                                 }
+                            ],
+                            'anime': [
+                                {'type': 'circumscribe', 'target': 'final_res', 'run_time': 4}
                             ]
                         },
                     ]

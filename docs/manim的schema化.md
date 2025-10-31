@@ -66,3 +66,39 @@ for vg_data in block["vgroups"]:
 大佬，我有一段manim代码，请你帮我进行code review，并给出修改后的代码。要求：
 1. 代码符合DRY原则，重复逻辑抽象为函数、类等。
 ```
+
+## 支持`Indicate, Circumscribe, SurroundingRectangle`等
+
+新开GLM-4.6对话
+
+大佬，你是一名数学科研工作者，精通manim。请叫我hans7。我有一段manim代码`manim_schema\json_driven_scene.py`，支持读取Python配置字典，生成manim视频。配置字典的类型定义文件`manim_schema\manim_json_schema.d.ts`在下面给出。
+
+现在我希望：
+
+1. 新增一个全局变量`vgroup_pool`。如果一个`vg_data`或`build_mobject_from_elem`方法中的`elem`参数提供了`id`属性，就把它加进`vgroup_pool`
+2. 新增`Indicate, Circumscribe, SurroundingRectangle`的播放能力。`vg_data`新增`anime`属性，ts类型定义如下：
+
+```ts
+interface AnimationDescription {
+  type: "indicate" | "circumscribe" | "surrounding_rectangle";
+  target: string;
+}
+
+interface VGroupData extends NestedVGroupElement {
+  wait?: number;
+  anime?: AnimationDescription[];
+}
+```
+
+`target`属性用于`vgroup_pool`的查询。其中`Indicate, Circumscribe`直接调用`self.play()`，`SurroundingRectangle`需要调用`self.play(Create)`以及`self.remove`。所以你需要对原有`play_animation_and_wait`方法的`self.play(Write(vg))`进行分类讨论。对于`SurroundingRectangle`，它需要在`page_wait_time`结束后再调用`self.remove`
+
+要求：
+
+1. 遵循最小改动原则，严禁修改与本次需求无关的代码
+2. 动画的播放顺序要严格遵循Python字典中数组定义的顺序
+
+`manim_schema\manim_json_schema.d.ts`：
+
+`manim_schema\json_driven_scene.py`：
+
+反馈：试了3次，输出的代码都有问题。鉴定为LLM没能力做这个需求。古法手作吧

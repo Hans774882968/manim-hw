@@ -51,7 +51,7 @@ def apply_math_tex_post_processing(math_tex: MathTex, elem: Dict[str, Any]) -> M
     return math_tex
 
 
-def build_mobject_from_elem(elem: Union[str, Dict[str, Any]]) -> Mobject:
+def build_mobject_from_elem(elem: Union[str, Dict[str, Any]], vgroup_pool: Dict[str, Mobject]) -> Mobject:
     # 支持字符串简写，给配置文件瘦身
     if isinstance(elem, str):
         return Text(elem, font_size=DEFAULT_FONT_SIZE["text"])
@@ -59,7 +59,7 @@ def build_mobject_from_elem(elem: Union[str, Dict[str, Any]]) -> Mobject:
     if "type" in elem:
         elem_type = elem.get("type", "text")
         elem_content = elem.get("content", "")
-        exclude_keys = {"type", "content", "set_color_by_tex", "set_color_by_tex_to_color_map"}
+        exclude_keys = {"id", "type", "content", "set_color_by_tex", "set_color_by_tex_to_color_map"}
         kwargs = filter_kwargs(elem, exclude_keys)
 
         if "font_size" not in kwargs:
@@ -77,7 +77,10 @@ def build_mobject_from_elem(elem: Union[str, Dict[str, Any]]) -> Mobject:
     # 嵌套 VGroup
     elif "elements" in elem:
         sub_elements = elem["elements"]
-        sub_mobjects = [build_mobject_from_elem(e) for e in sub_elements]
+        sub_mobjects = [build_mobject_from_elem(e, vgroup_pool) for e in sub_elements]
+        for sm, e in zip(sub_mobjects, sub_elements):
+            if "id" in e:
+                vgroup_pool[e["id"]] = sm
 
         arrange_config = elem.get("arrange", {})
         direction, arrange_kwargs = get_arrange_args(arrange_config)
@@ -134,15 +137,60 @@ class OriginalJsonScene(Scene):
         self.wait(17)
         self.play(FadeOut(title_group, subtitle_group))
 
-    def play_animation_and_wait(self, vgroups_in_block, vg_data_list):
+    def show_ending(self, last_section_to_remove):
+        postscript_arr = [
+            Text("后记", font_size=60, color=YELLOW),
+            Text("为做题人的精神自留地添砖加瓦", font_size=28, color=RED),
+            Text("喜欢本期视频的话，别忘了一键三连哦", font_size=28, color=PINK),
+            Text("谢谢观看~", font_size=28),
+        ]
+        postscript_group = VGroup(*postscript_arr).arrange(DOWN, buff=0.4)
+        self.play(ReplacementTransform(last_section_to_remove, postscript_group))
+        self.play(
+            Wiggle(postscript_group[-3]),
+            Circumscribe(postscript_group[-2], run_time=4, color=PINK)
+        )
+        self.play(
+            Wiggle(postscript_group[-3]),
+            Wiggle(postscript_group[-2])
+        )
+        self.wait(16)
+
+    def play_anime_in_vgroup(self, vg_data):
+        anime_descriptions = vg_data.get("anime")
+        if not anime_descriptions:
+            return
+        for anime_desc in anime_descriptions:
+            anime_type = anime_desc.get("type")
+            target_id = anime_desc.get("target")
+            kwargs = filter_kwargs(anime_desc, {"type", "target"})
+
+            if target_id not in self.vgroup_pool:
+                continue
+            tgt = self.vgroup_pool[target_id]
+
+            if anime_type == "indicate":
+                self.play(Indicate(tgt, color=BLUE, **kwargs))
+            elif anime_type == "circumscribe":
+                self.play(Circumscribe(tgt, color=BLUE, **kwargs))
+            elif anime_type == "surrounding_rectangle":
+                frame_box = SurroundingRectangle(tgt, color=BLUE, **kwargs)
+                self.play(Create(frame_box))
+                self.mobjects_to_remove_on_page.append(frame_box)
+
+    def play_vg_animation_and_wait(self, vgroups_in_block, vg_data_list):
         for vg, vg_data in zip(vgroups_in_block, vg_data_list):
             self.play(Write(vg))
+
+            self.play_anime_in_vgroup(vg_data)
+
             vg_wait_time = vg_data.get("wait", 0)
             if vg_wait_time > 0:
                 self.wait(vg_wait_time)
 
     def construct(self):
         self.schema_data = self.get_schema_data()
+        self.vgroup_pool = {}
         self.show_bg()
         self.show_title()
 
@@ -169,6 +217,7 @@ class OriginalJsonScene(Scene):
             prev_page = VGroup()  # 上一页的所有 vgroup（不含标题）
 
             for blk_idx, block in enumerate(blocks):
+                self.mobjects_to_remove_on_page = []
                 vgroups_in_block = []
                 vg_data_list = block.get("vgroups", [])
                 for vg_data in vg_data_list:
@@ -176,7 +225,10 @@ class OriginalJsonScene(Scene):
                     direction, arrange_kwargs = get_arrange_args(arrange_config)
 
                     elements = vg_data.get("elements", [])
-                    display_elements = [build_mobject_from_elem(elem) for elem in elements]
+                    display_elements = [build_mobject_from_elem(elem, self.vgroup_pool) for elem in elements]
+                    for d_elem, elem in zip(display_elements, elements):
+                        if "id" in elem:
+                            self.vgroup_pool[elem["id"]] = d_elem
                     vgroup = VGroup(*display_elements).arrange(direction, **arrange_kwargs)
                     vgroups_in_block.append(vgroup)
 
@@ -190,17 +242,18 @@ class OriginalJsonScene(Scene):
 
                 # 第一个 block 逐个 Write
                 if blk_idx == 0:
-                    self.play_animation_and_wait(vgroups_in_block, vg_data_list)
+                    self.play_vg_animation_and_wait(vgroups_in_block, vg_data_list)
                 else:
                     # 后续 block 先用第一个 vgroup 替换上一个 block 的全部内容
                     self.play(ReplacementTransform(prev_page, vgroups_in_block[0]))
+                    self.play_anime_in_vgroup(vg_data_list[0])
                     vg0_wait_time = vg_data_list[0].get("wait", 0)
                     if vg0_wait_time > 0:
                         self.wait(vg0_wait_time)
                     # 然后 Write 剩余的 vgroup（如果有）
                     vgroups_in_block1 = vgroups_in_block[1:]
                     vg_data_list1 = vg_data_list[1:]
-                    self.play_animation_and_wait(vgroups_in_block1, vg_data_list1)
+                    self.play_vg_animation_and_wait(vgroups_in_block1, vg_data_list1)
 
                 prev_page = current_page
                 current_mobjects = VGroup(title_mob, current_page)
@@ -209,9 +262,15 @@ class OriginalJsonScene(Scene):
                 if page_wait_time > 0:
                     self.wait(page_wait_time)
 
+                if self.mobjects_to_remove_on_page:
+                    self.remove(*self.mobjects_to_remove_on_page)
+                    self.mobjects_to_remove_on_page.clear()
+
             section_wait_time = section.get("wait", 0)
             if section_wait_time > 0:
                 self.wait(section_wait_time)
+
+        self.show_ending(current_mobjects)
 
     def get_schema_data(self) -> Dict[str, Any]:
         raise NotImplementedError("Subclasses must implement get_schema_data or inject schema_data")

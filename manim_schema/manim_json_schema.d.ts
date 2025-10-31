@@ -49,8 +49,16 @@ interface NestedVGroupElement {
 // string 视为 TextElement
 type VgElement = 'string' | TextElement | MathTexElement | MarkupTextElement | NestedVGroupElement;
 
+interface AnimationDescription {
+  type: "indicate" | "circumscribe" | "surrounding_rectangle";
+  target: string;
+  // 给 Indicate, Circumscribe 等类透传的属性
+  [key: string]: any;
+}
+
 interface VGroupData extends NestedVGroupElement {
   wait?: number; // 每个 vgroup 渲染后的等待时间（秒）。默认为 0
+  anime?: AnimationDescription[];
 }
 
 // 一块占一页
