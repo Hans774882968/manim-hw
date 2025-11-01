@@ -11,6 +11,7 @@ scene_cfg = {
         '2026河南新未来高三',
         '10月联合测评T14'
     ],
+    'problem_source': 'https://www.bilibili.com/video/BV1CTxczoEXX',
     'sections': [
         {
             'title': '题干',

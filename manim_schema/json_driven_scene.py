@@ -118,9 +118,11 @@ class OriginalJsonScene(Scene):
 
     def show_title(self):
         title_data = self.schema_data["title"]
+        problem_source = self.schema_data.get("problem_source", "")
         title_group = build_title_group(title_data, color=BLUE)
-        subtitle_arr = [
-            Text("题源： https://www.bilibili.com/video/BV12DJXzoEgK", font_size=DEFAULT_FONT_SIZE["footer"], color=YELLOW),
+        subtitle_arr = ([
+            Text(f"题源： {problem_source}", font_size=DEFAULT_FONT_SIZE["footer"], color=YELLOW),
+        ] if problem_source else []) + [
             MarkupText("作者：<span foreground=\"#58C4DD\">hans7</span>", font_size=DEFAULT_FONT_SIZE["footer"]),
             Text("我们必须想象，做题人是幸福的", font_size=DEFAULT_FONT_SIZE["footer"], color=BLUE),
             Text("文字稿传送门：见视频简介", font_size=DEFAULT_FONT_SIZE["footer"], color=YELLOW),
@@ -134,7 +136,8 @@ class OriginalJsonScene(Scene):
         self.play(Write(title_group), run_time=1)
         self.play(FadeIn(subtitle_group, shift=DOWN))
         self.play(Circumscribe(subtitle_arr[2], run_time=4, color=BLUE))
-        self.wait(17)
+        title_wait = self.schema_data.get("title_wait", 17)
+        self.wait(title_wait)
         self.play(FadeOut(title_group, subtitle_group))
 
     def show_ending(self, last_section_to_remove):
@@ -154,7 +157,8 @@ class OriginalJsonScene(Scene):
             Wiggle(postscript_group[-3]),
             Wiggle(postscript_group[-2])
         )
-        self.wait(16)
+        ending_wait = self.schema_data.get("ending_wait", 16)
+        self.wait(ending_wait)
 
     def play_anime_in_vgroup(self, vg_data):
         anime_descriptions = vg_data.get("anime")

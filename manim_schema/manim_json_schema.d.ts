@@ -80,5 +80,8 @@ interface Section {
 interface ManimJsonSchema {
   output_file: string;
   title: Title;
+  problem_source?: string;
+  title_wait?: number; // 标题页的等待时间（秒）。默认为 17
+  ending_wait?: number; // 后记页的等待时间（秒）。默认为 16
   sections: Section[];
 }

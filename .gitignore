@@ -22,3 +22,6 @@ media/**/*.png
 # !media/**/*.kdenlive
 # !media/**/*.ass
 # !media/**/*.srt
+
+# manim-slides
+slides/
