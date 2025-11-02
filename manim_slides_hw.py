@@ -1,5 +1,6 @@
-from manim_slides import Slide
+from manim_slides.slide import Slide
 from manim import *
+
 
 class ManimSlidesHw(Slide):
     """WARNING: this example does not seem to work with ManimGL."""
