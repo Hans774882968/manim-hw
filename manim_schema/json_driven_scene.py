@@ -108,7 +108,17 @@ def build_title_group(title_data: Union[str, List[str]], is_subtitle_mode: bool 
     return VGroup(*text_list).arrange(DOWN, buff=0.2)
 
 
-class OriginalJsonScene(Scene):
+class JsonDrivenScene(Scene):
+    def my_setup(self, schema_data, last_section_to_remove=None):
+        '''
+        manim 不推荐覆盖 `__init__` 方法（实测能正常运行），但 setup 不支持传参
+        所以引入一个 my_setup 方法，并调用 check_schema_data 确保有 schema 数据
+        '''
+        self.schema_data = schema_data
+        self.last_section_to_remove = last_section_to_remove
+        self.vgroup_pool = {}
+        self.section_to_remove = None
+
     def show_bg(self):
         background = ImageMobject(BACKGROUND_IMAGE_PATH)
         background.set_opacity(BACKGROUND_OPACITY)
@@ -192,13 +202,8 @@ class OriginalJsonScene(Scene):
             if vg_wait_time > 0:
                 self.wait(vg_wait_time)
 
-    def construct(self):
-        self.schema_data = self.get_schema_data()
-        self.vgroup_pool = {}
-        self.show_bg()
-        self.show_title()
-
-        sections = self.schema_data["sections"]
+    def show_sections(self, last_section_to_remove=None):
+        sections = self.schema_data if isinstance(self, JsonSceneFragment) else self.schema_data["sections"]
         current_mobjects = VGroup()  # 包含标题 + 当前 block 所有 vgroup
 
         for sec_idx, section in enumerate(sections):
@@ -212,7 +217,10 @@ class OriginalJsonScene(Scene):
             title_mob.to_edge(UP, buff=0.5)
 
             if sec_idx == 0:
-                self.play(Write(title_mob))
+                if last_section_to_remove is None:
+                    self.play(Write(title_mob))
+                else:
+                    self.play(ReplacementTransform(last_section_to_remove, title_mob))
             else:
                 self.play(ReplacementTransform(current_mobjects, title_mob))
             current_mobjects = VGroup(title_mob)
@@ -274,10 +282,28 @@ class OriginalJsonScene(Scene):
             if section_wait_time > 0:
                 self.wait(section_wait_time)
 
+        return current_mobjects
+
+    def construct(self):
+        self.check_schema_data()
+        self.show_bg()
+        self.show_title()
+        current_mobjects = self.show_sections()
         self.show_ending(current_mobjects)
 
-    def get_schema_data(self) -> Dict[str, Any]:
-        raise NotImplementedError("Subclasses must implement get_schema_data or inject schema_data")
+    def set_schema_data(self, schema_data: Dict[str, Any]):
+        self.schema_data = schema_data
+
+    def check_schema_data(self):
+        if not self.schema_data:
+            raise ValueError("self.schema_data is not set")
+
+
+class JsonSceneFragment(JsonDrivenScene):
+    def build(self):
+        self.check_schema_data()
+        current_mobjects = self.show_sections(self.last_section_to_remove)
+        self.section_to_remove = current_mobjects
 
 
 def main(scene_cfg: Dict[str, Any] = None):
@@ -311,17 +337,13 @@ def main(scene_cfg: Dict[str, Any] = None):
     else:
         raise ValueError("Either scene_cfg or --config must be provided")
 
-    # 注入 schema_data 到 Scene ，避免全局变量
-    class JsonDrivenScene(OriginalJsonScene):
-        def get_schema_data(self):
-            return schema_data
-
     output_file = schema_data["output_file"]
     config.output_file = output_file
     config.video_dir = '{media_dir}/videos/%s/{quality}' % (output_file)
     config.quality = args.quality
     config.preview = args.preview
     scene = JsonDrivenScene()
+    scene.my_setup(schema_data)
     scene.render()
 
 

@@ -45,7 +45,7 @@ class ShootPractice(Scene):
         self.labels = labels
         return targets
 
-    def shoot(self, aim_scope, targets, r: int, c: int):
+    def shoot(self, aim_scope, targets, nihilism_score_text, nihilism_score, r: int, c: int):
         goal = targets[r][c]
         label = self.labels[r][c]
         self.play(ApplyMethod(aim_scope.next_to, goal, ORIGIN))
@@ -56,12 +56,15 @@ class ShootPractice(Scene):
             new_color = ORANGE
         else:
             new_color = RED
+        new_nihilism_score = Integer(nihilism_score.get_value() + 3).next_to(nihilism_score_text, RIGHT)
         self.play(
             ApplyMethod(goal.set_fill, new_color),
             ApplyMethod(goal.set_color, new_color),
             ApplyMethod(label.set_color, new_color),
+            ReplacementTransform(nihilism_score, new_nihilism_score)
         )
         self.wait(0.2)
+        return new_nihilism_score
 
     def construct(self):
         aim_scope = self.draw_aim_scope()
@@ -76,14 +79,12 @@ class ShootPractice(Scene):
             (1, 2), (2, 2), (0, 0), (2, 0),
             (0, 3), (1, 0), (2, 1), (0, 1),
             (0, 2), (2, 3), (1, 3), (1, 1),
-            (1, 2), (2, 2), (0, 0), (1, 0),
+            (1, 2), (2, 2), (1, 0),  # (0, 0),
             # (0, 3), (2, 0), (2, 1), (0, 1),
             # (0, 2), (2, 3), (1, 3), (1, 1),
         )
         for (r, c) in shoot_seq:
-            self.shoot(aim_scope, targets, r, c)
-            new_nihilism_score = Integer(nihilism_score.get_value() + 1).next_to(nihilism_score_text, RIGHT)
-            self.play(ReplacementTransform(nihilism_score, new_nihilism_score))
+            new_nihilism_score = self.shoot(aim_scope, targets, nihilism_score_text, nihilism_score, r, c)
             nihilism_score = new_nihilism_score
         self.wait()
 
@@ -93,12 +94,17 @@ class ShootPractice(Scene):
         for target in all_targets:
             random_pos = np.array([random.uniform(-0.4, 0.4), random.uniform(-0.2, 0.2), 0])
             target_shifts.append(ApplyMethod(target.shift, random_pos))
-        self.play(*target_shifts, run_time=0.8)
+        self.play(
+            *target_shifts,
+            ApplyMethod(aim_scope.next_to, targets[0][0], ORIGIN),
+            run_time=0.8
+        )
+
         aim_scope_shift_direction = LEFT * 3 + DOWN * 2
         self.play(
             all_targets.animate.set_color(RED_E).scale(1.2),
             all_labels.animate.set_color(RED).scale(1.2),
-            nihilism_score.animate.set_value(999),
+            nihilism_score.animate.set_value(114514).set_color(RED),
             ApplyMethod(aim_scope.shift, aim_scope_shift_direction),
             ApplyMethod(aim_scope[2].shift, aim_scope_shift_direction + UP * 0.3 + 0.1 * RIGHT),  # 十字线错位
             ApplyMethod(aim_scope[3].shift, aim_scope_shift_direction + LEFT * 0.3 + 0.1 * UP),
