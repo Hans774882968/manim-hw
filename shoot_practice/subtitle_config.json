@@ -1,0 +1,53 @@
+{
+  "srt_file": "media\\bili\\shoot_practice\\shoot_how_to.srt",
+  "replacements": [
+    [
+      "汉斯",
+      "Hans"
+    ],
+    [
+      "V Group",
+      "VGroup"
+    ],
+    [
+      "fill color",
+      "fill_color"
+    ],
+    [
+      "fill opacity",
+      "fill_opacity"
+    ],
+    [
+      "Point 3D",
+      "Point3D"
+    ],
+    [
+      "num py",
+      "numpy"
+    ],
+    [
+      "move to",
+      "move_to"
+    ],
+    [
+      "next to",
+      "next_to"
+    ],
+    [
+      "to edge",
+      "to_edge"
+    ],
+    [
+      "Apply Method",
+      "ApplyMethod"
+    ],
+    [
+      "Shrink To Center",
+      "ShrinkToCenter"
+    ],
+    [
+      "aligned edge",
+      "aligned_edge"
+    ]
+  ]
+}

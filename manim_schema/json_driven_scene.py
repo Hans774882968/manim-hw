@@ -73,6 +73,13 @@ def build_mobject_from_elem(elem: Union[str, Dict[str, Any]], vgroup_pool: Dict[
             return math_tex
         elif elem_type == "markup_text":
             return MarkupText(elem_content, **kwargs)
+        elif elem_type == "code":
+            code_kwargs = filter_kwargs(kwargs, {"font_size"})
+            return Code(code_string=elem_content, **code_kwargs)
+        elif elem_type == "paragraph":
+            if not isinstance(elem_content, list):
+                elem_content = [elem_content]
+            return Paragraph(*elem_content, **kwargs)
         raise ValueError(f"Unknown element type: {elem_type}")
     # 嵌套 VGroup
     elif "elements" in elem:

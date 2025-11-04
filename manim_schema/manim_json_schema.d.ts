@@ -41,13 +41,25 @@ interface MarkupTextElement {
   [key: string]: any;
 }
 
+interface CodeElement {
+  type: 'code';
+  content: string;
+  [key: string]: any;
+}
+
+interface ParagraphElement {
+  type: 'paragraph';
+  content: string | string[];
+  [key: string]: any;
+}
+
 interface NestedVGroupElement {
   elements: VgElement[];
   arrange?: ArrangeConfig;
 }
 
 // string 视为 TextElement
-type VgElement = 'string' | TextElement | MathTexElement | MarkupTextElement | NestedVGroupElement;
+type VgElement = 'string' | TextElement | MathTexElement | MarkupTextElement | CodeElement | ParagraphElement | NestedVGroupElement;
 
 interface AnimationDescription {
   type: "indicate" | "circumscribe" | "surrounding_rectangle";
