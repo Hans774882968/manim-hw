@@ -27,15 +27,21 @@ scene_cfg = [
                         'elements': [
                             '推荐博客：',
                             {
-                                'type': 'text',
-                                'content': 'https://www.bilibili.com/opus/247191680174716386',
-                                'font_size': 32
+                                'type': 'paragraph',
+                                'line_spacing': 0.7,
+                                'content': [
+                                    '1. 入门教程（老）： https://www.bilibili.com/opus/247191680174716386',
+                                    '2. manim 边做边学： https://www.cnblogs.com/wang_yb/p/18674709',
+                                    '3. animate 属性： https://juejin.cn/post/7507564752434806821',
+                                ],
+                                'font_size': 28,
+                                'color': 'BLUE',
+                                't2c': {
+                                    '1. 入门教程（老）：': 'WHITE',
+                                    '2. manim 边做边学：': 'WHITE',
+                                    '3. animate 属性：': 'WHITE',
+                                }
                             },
-                            {
-                                'type': 'text',
-                                'content': 'https://juejin.cn/post/7507564752434806821',
-                                'font_size': 32
-                            }
                         ],
                     }
                 ]
@@ -62,16 +68,19 @@ Circle(radius=0.1, color=RED, fill_color=RED, fill_opacity=1) # 实心圆
                                     },
                                     {
                                         **code_common_config,
+                                        'paragraph_config': {'font_size': 16},
                                         'content': '''
 Line(start=LEFT, end=RIGHT, color=RED) # 绘制线段
-# manim 提供的向量举例
-LEFT, RIGHT = np.array((-1, 0.0, 0)), np.array((1, 0, 0.0))
+LEFT, RIGHT = np.array((-1, 0.0, 0)), np.array((1, 0, 0.0)) # manim 提供的向量举例
+Point3DLike: TypeAlias = Union[Point3D, tuple[float, float, float]]
+Point3D: TypeAlias = npt.NDArray[PointDType]
+Vector3D: TypeAlias = npt.NDArray[PointDType]
 '''
                                     },
                                     {
                                         **code_common_config,
                                         'content': '''
-aim_scope = VGroup(outer_circle, inner_circle, ...) # 组合
+aim_scope = VGroup(outer_circle, inner_circle, ...) # 打包多个图形
 self.play(FadeIn(aim_scope)) # VGroup 动画
 '''
                                     }
@@ -95,9 +104,13 @@ self.play(FadeIn(aim_scope)) # VGroup 动画
                                 **code_common_config,
                                 'content': '''
 aim_scope.shift(LEFT * 1.14 + UP * 5.14) # 向左上角移动
-dot_p.move_to(np.array([x, y, 0]))
+
+dot_p.move_to(np.array([x, y, 0])) # 移到指定坐标
+
 aim_scope.next_to(target, ORIGIN) # 移到target的中心
-Text("虚无刻度").to_edge(UP)
+aim_scope.next_to(target, LEFT) # 移到target的左边
+
+Text("虚无刻度").to_edge(UP) # 移到屏幕上方中心
 '''
                             },
                         ]
@@ -118,6 +131,7 @@ Text("虚无刻度").to_edge(UP)
                             {
                                 **code_common_config,
                                 'content': '''
+# 过渡动画的两种创建方式
 ApplyMethod(goal.set_fill, new_color)
 gp.animate.scale(0.01).set_color(BLACK)
 '''
@@ -125,6 +139,7 @@ gp.animate.scale(0.01).set_color(BLACK)
                             {
                                 **code_common_config,
                                 'content': '''
+# 多个动画同时进行
 self.play(
     ApplyMethod(goal.set_fill, new_color),
     ReplacementTransform(score, new_score)
@@ -138,7 +153,7 @@ self.play(
         ]
     },
     {
-        'title': '它们有区别吗？',
+        'title': '这两种方法有区别吗？',
         'blocks': [
             {
                 'vgroups': [
@@ -148,7 +163,7 @@ self.play(
                         'elements': [
                             {
                                 'type': 'paragraph',
-                                'line_spacing': 0.8,
+                                'line_spacing': 0.7,
                                 'content': [
                                     'kimi k2：有区别',
                                     'Qwen3-Max、GLM-4.6：没区别',
@@ -199,13 +214,17 @@ self.play(FadeIn(aim_scope))
                                 **code_common_config,
                                 'paragraph_config': {'font_size': 16},
                                 'content': '''
-for i in range(r): for j in range(c):
+for i in range(r): for j in range(c): # r=3, c=4, 间距2
     target = Circle(radius=0.4, color=GRAY, fill_color=GRAY, fill_opacity=0.4)
     target.shift((-3 + 2 * j) * RIGHT + (-2 + 2 * i) * DOWN)
     label = Text(target_labels[idx], font_size=24, color=GRAY)
     label.next_to(target, DOWN, buff=0.1)
     self.play(FadeIn(target), FadeIn(label))
 '''
+                            },
+                            {
+                                'type': 'math_tex',
+                                'content': r'k+2(x-1)=-k \Rightarrow k = 1-x \text{ then let x = r, c}'
                             }
                         ],
                     }
@@ -264,7 +283,7 @@ self.play(
                         'elements': [
                             {
                                 'type': 'paragraph',
-                                'line_spacing': 0.8,
+                                'line_spacing': 0.7,
                                 'content': [
                                     '问LLM要代码 → 手动微调',
                                     '流程：',
@@ -286,10 +305,14 @@ self.play(
                                 **code_common_config,
                                 'paragraph_config': {'font_size': 14},
                                 'content': '''
+aim_scope_shift_direction = LEFT * 3 + DOWN * 2
 self.play(
     all_targets.animate.set_color(RED_E).scale(1.2),
+    all_labels.animate.set_color(RED).scale(1.2),
     nihilism_score.animate.set_value(114514).set_color(RED),
-    # ...
+    ApplyMethod(aim_scope.shift, aim_scope_shift_direction),
+    ApplyMethod(aim_scope[2].shift, aim_scope_shift_direction + UP * 0.3 + 0.1 * RIGHT),  # 十字线错位
+    ApplyMethod(aim_scope[3].shift, aim_scope_shift_direction + LEFT * 0.3 + 0.1 * UP),
     run_time=0.8
 )
 
@@ -333,27 +356,8 @@ class ShootHowTo(JsonSceneFragment):
         title_to_remove = VGroup(title_group, subtitle_group)
         return title_to_remove
 
-    def show_ending(self, last_section_to_remove):
-        postscript_arr = [
-            Text("后记", font_size=60, color=YELLOW),
-            Text("为做题人的精神自留地添砖加瓦", font_size=28, color=RED),
-            Text("喜欢本期视频的话，别忘了一键三连哦", font_size=28, color=PINK),
-            Text("谢谢观看~", font_size=28),
-        ]
-        postscript_group = VGroup(*postscript_arr).arrange(DOWN, buff=0.4)
-        self.play(ReplacementTransform(last_section_to_remove, postscript_group))
-        self.play(
-            Wiggle(postscript_group[-3]),
-            Circumscribe(postscript_group[-2], run_time=4, color=PINK)
-        )
-        self.play(
-            Wiggle(postscript_group[-3]),
-            Wiggle(postscript_group[-2])
-        )
-        self.wait(16)
-
     def construct(self):
         title_to_remove = self.show_title()
         self.my_setup(scene_cfg, title_to_remove)
         self.build()
-        self.show_ending(self.section_to_remove)
+        self.show_ending(self.section_to_remove, 16)

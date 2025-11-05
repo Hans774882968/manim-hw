@@ -3,6 +3,8 @@ from manim import *
 
 class ApplyMethodDemo(Scene):
     def construct(self):
+        l1 = Line(LEFT, RIGHT, color=PURPLE)
+        self.add(l1)
         s1 = Square(color=BLUE, fill_color=BLUE, fill_opacity=0.5)
         s2 = Circle(color=RED, fill_color=RED, fill_opacity=0.5)
         self.add(s1, s2)

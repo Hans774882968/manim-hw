@@ -51,36 +51,47 @@ def apply_math_tex_post_processing(math_tex: MathTex, elem: Dict[str, Any]) -> M
     return math_tex
 
 
+def build_leaf_from_elem(elem: Union[str, Dict[str, Any]]):
+    elem_type = elem.get("type", "text")
+    elem_content = elem.get("content", "")
+    exclude_keys = {"id", "type", "content", "set_color_by_tex", "set_color_by_tex_to_color_map", "operations"}
+    kwargs = filter_kwargs(elem, exclude_keys)
+
+    if "font_size" not in kwargs:
+        kwargs["font_size"] = DEFAULT_FONT_SIZE.get(elem_type, DEFAULT_FONT_SIZE["text"])
+
+    if elem_type == "text":
+        text_obj = Text(elem_content, **kwargs)
+        return text_obj
+    elif elem_type == "math_tex":
+        math_tex = create_math_tex(elem_content, kwargs)
+        math_tex = apply_math_tex_post_processing(math_tex, elem)
+        return math_tex
+    elif elem_type == "markup_text":
+        markup_text = MarkupText(elem_content, **kwargs)
+        return markup_text
+    elif elem_type == "code":
+        code_kwargs = filter_kwargs(kwargs, {"font_size"})
+        code_obj = Code(code_string=elem_content, **code_kwargs)
+        return code_obj
+    elif elem_type == "paragraph":
+        if not isinstance(elem_content, list):
+            elem_content = [elem_content]
+        paragraph = Paragraph(*elem_content, **kwargs)
+        return paragraph
+    raise ValueError(f"Unknown element type: {elem_type}")
+
+
 def build_mobject_from_elem(elem: Union[str, Dict[str, Any]], vgroup_pool: Dict[str, Mobject]) -> Mobject:
     # 支持字符串简写，给配置文件瘦身
     if isinstance(elem, str):
         return Text(elem, font_size=DEFAULT_FONT_SIZE["text"])
+    elem_operations = elem.get("operations", lambda _: ...)
     # 叶子节点
     if "type" in elem:
-        elem_type = elem.get("type", "text")
-        elem_content = elem.get("content", "")
-        exclude_keys = {"id", "type", "content", "set_color_by_tex", "set_color_by_tex_to_color_map"}
-        kwargs = filter_kwargs(elem, exclude_keys)
-
-        if "font_size" not in kwargs:
-            kwargs["font_size"] = DEFAULT_FONT_SIZE.get(elem_type, DEFAULT_FONT_SIZE["text"])
-
-        if elem_type == "text":
-            return Text(elem_content, **kwargs)
-        elif elem_type == "math_tex":
-            math_tex = create_math_tex(elem_content, kwargs)
-            math_tex = apply_math_tex_post_processing(math_tex, elem)
-            return math_tex
-        elif elem_type == "markup_text":
-            return MarkupText(elem_content, **kwargs)
-        elif elem_type == "code":
-            code_kwargs = filter_kwargs(kwargs, {"font_size"})
-            return Code(code_string=elem_content, **code_kwargs)
-        elif elem_type == "paragraph":
-            if not isinstance(elem_content, list):
-                elem_content = [elem_content]
-            return Paragraph(*elem_content, **kwargs)
-        raise ValueError(f"Unknown element type: {elem_type}")
+        leaf_obj = build_leaf_from_elem(elem)
+        elem_operations(leaf_obj)
+        return leaf_obj
     # 嵌套 VGroup
     elif "elements" in elem:
         sub_elements = elem["elements"]
@@ -94,6 +105,7 @@ def build_mobject_from_elem(elem: Union[str, Dict[str, Any]], vgroup_pool: Dict[
 
         nested_vgroup = VGroup(*sub_mobjects)
         nested_vgroup.arrange(direction, **arrange_kwargs)
+        elem_operations(nested_vgroup)
         return nested_vgroup
 
     raise ValueError(f"Invalid element: must have 'type' (leaf) or 'elements' (nested vgroup). Got: {elem}")
@@ -157,7 +169,7 @@ class JsonDrivenScene(Scene):
         self.wait(title_wait)
         self.play(FadeOut(title_group, subtitle_group))
 
-    def show_ending(self, last_section_to_remove):
+    def show_ending(self, last_section_to_remove, ending_wait):
         postscript_arr = [
             Text("后记", font_size=60, color=YELLOW),
             Text("为做题人的精神自留地添砖加瓦", font_size=28, color=RED),
@@ -174,7 +186,6 @@ class JsonDrivenScene(Scene):
             Wiggle(postscript_group[-3]),
             Wiggle(postscript_group[-2])
         )
-        ending_wait = self.schema_data.get("ending_wait", 16)
         self.wait(ending_wait)
 
     def play_anime_in_vgroup(self, vg_data):
@@ -257,6 +268,10 @@ class JsonDrivenScene(Scene):
                     for i in range(1, len(vgroups_in_block)):
                         vgroups_in_block[i].next_to(vgroups_in_block[i - 1], DOWN, buff=0.5)
 
+                for vg, vg_data in zip(vgroups_in_block, vg_data_list):
+                    vg_data_operations = vg_data.get("operations", lambda _: ...)
+                    vg_data_operations(vg)
+
                 current_page = VGroup(*vgroups_in_block)
 
                 # 第一个 block 逐个 Write
@@ -296,7 +311,8 @@ class JsonDrivenScene(Scene):
         self.show_bg()
         self.show_title()
         current_mobjects = self.show_sections()
-        self.show_ending(current_mobjects)
+        ending_wait = self.schema_data.get("ending_wait", 16)
+        self.show_ending(current_mobjects, ending_wait)
 
     def set_schema_data(self, schema_data: Dict[str, Any]):
         self.schema_data = schema_data

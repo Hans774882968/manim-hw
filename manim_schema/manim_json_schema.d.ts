@@ -9,8 +9,12 @@ interface ArrangeConfig {
   [key: string]: any;
 }
 
+interface ManimObj {
+  operations?: (m: unknown) => void;
+}
+
 // 默认 font_size = 36, color = WHITE
-interface TextElement {
+interface TextElement extends ManimObj {
   type: 'text';
   content: string;
   font_size?: number;
@@ -20,7 +24,7 @@ interface TextElement {
 }
 
 // 默认 font_size = 48, color = WHITE
-interface MathTexElement {
+interface MathTexElement extends ManimObj {
   type: 'math_tex';
   content: string | string[];
   font_size?: number;
@@ -32,7 +36,7 @@ interface MathTexElement {
 }
 
 // 默认 font_size = 36, color = WHITE
-interface MarkupTextElement {
+interface MarkupTextElement extends ManimObj {
   type: 'markup_text';
   content: string;
   font_size?: number;
@@ -41,19 +45,19 @@ interface MarkupTextElement {
   [key: string]: any;
 }
 
-interface CodeElement {
+interface CodeElement extends ManimObj {
   type: 'code';
   content: string;
   [key: string]: any;
 }
 
-interface ParagraphElement {
+interface ParagraphElement extends ManimObj {
   type: 'paragraph';
   content: string | string[];
   [key: string]: any;
 }
 
-interface NestedVGroupElement {
+interface NestedVGroupElement extends ManimObj {
   elements: VgElement[];
   arrange?: ArrangeConfig;
 }

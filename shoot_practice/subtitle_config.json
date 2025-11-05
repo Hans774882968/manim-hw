@@ -18,8 +18,16 @@
       "fill_opacity"
     ],
     [
+      "Point 3D Like",
+      "Point3DLike"
+    ],
+    [
       "Point 3D",
       "Point3D"
+    ],
+    [
+      "Vector 3D",
+      "Vector3D"
     ],
     [
       "num py",
@@ -48,6 +56,10 @@
     [
       "aligned edge",
       "aligned_edge"
+    ],
+    [
+      "负",
+      "-"
     ]
   ]
 }
