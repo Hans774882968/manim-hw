@@ -18,7 +18,7 @@ code_common_config = {
 scene_cfg = [
     {
         'title': '学习材料',
-        'wait': 12,
+        'wait': 56,  # 首先讲怎么画基本图形
         'blocks': [
             {
                 'vgroups': [
@@ -54,37 +54,45 @@ scene_cfg = [
             {
                 'vgroups': [
                     {
-                        'wait': 5,
+                        'wait': 14,  # 线段要给出起点和终点
+                        'vg_buff': 0.8,
                         'elements': [
                             {
-                                'arrange': {'aligned_edge': 'left'},
-                                'elements': [
-                                    {
-                                        **code_common_config,
-                                        'content': '''
+                                **code_common_config,
+                                'content': '''
 Circle(radius=0.8, color=BLUE) # 绘制空心圆
 Circle(radius=0.1, color=RED, fill_color=RED, fill_opacity=1) # 实心圆
 '''
-                                    },
-                                    {
-                                        **code_common_config,
-                                        'paragraph_config': {'font_size': 16},
-                                        'content': '''
+                            },
+                        ]
+                    },
+                    {
+                        'wait': 36,  # 另外，我们会用
+                        'vg_buff': 0.25,
+                        'elements': [
+                            {
+                                **code_common_config,
+                                'paragraph_config': {'font_size': 16},
+                                'content': '''
 Line(start=LEFT, end=RIGHT, color=RED) # 绘制线段
 LEFT, RIGHT = np.array((-1, 0.0, 0)), np.array((1, 0, 0.0)) # manim 提供的向量举例
 Point3DLike: TypeAlias = Union[Point3D, tuple[float, float, float]]
 Point3D: TypeAlias = npt.NDArray[PointDType]
 Vector3D: TypeAlias = npt.NDArray[PointDType]
 '''
-                                    },
-                                    {
-                                        **code_common_config,
-                                        'content': '''
+                            },
+                        ]
+                    },
+                    {
+                        'wait': 9,  # 接着讲怎么移动图形
+                        'vg_buff': 0.25,
+                        'elements': [
+                            {
+                                **code_common_config,
+                                'content': '''
 aim_scope = VGroup(outer_circle, inner_circle, ...) # 打包多个图形
 self.play(FadeIn(aim_scope)) # VGroup 动画
 '''
-                                    }
-                                ]
                             }
                         ],
                     }
@@ -98,7 +106,7 @@ self.play(FadeIn(aim_scope)) # VGroup 动画
             {
                 'vgroups': [
                     {
-                        'wait': 5,
+                        'wait': 35,  # 但直接用这些方法
                         'elements': [
                             {
                                 **code_common_config,
@@ -126,7 +134,7 @@ Text("虚无刻度").to_edge(UP) # 移到屏幕上方中心
                 'vgroups': [
                     {
                         'arrange': {'aligned_edge': 'left'},
-                        'wait': 5,
+                        'wait': 30,  # 问题来了
                         'elements': [
                             {
                                 **code_common_config,
@@ -159,7 +167,7 @@ self.play(
                 'vgroups': [
                     {
                         'arrange': {'aligned_edge': 'left'},
-                        'wait': 5,
+                        'wait': 24,  # 有这点知识
                         'elements': [
                             {
                                 'type': 'paragraph',
@@ -196,7 +204,7 @@ target.animate.shift(random_pos) # √ 更推荐
                 'vgroups': [
                     {
                         'arrange': {'aligned_edge': 'left'},
-                        'wait': 5,
+                        'wait': 35,  # 显示分数也不难
                         'elements': [
                             {
                                 **code_common_config,
@@ -239,7 +247,7 @@ for i in range(r): for j in range(c): # r=3, c=4, 间距2
                 'vgroups': [
                     {
                         'arrange': {'aligned_edge': 'left'},
-                        'wait': 5,
+                        'wait': 25,  # 写好初版代码后
                         'elements': [
                             {
                                 **code_common_config,
@@ -279,7 +287,7 @@ self.play(
             {
                 'vgroups': [
                     {
-                        'wait': 12,
+                        'wait': 45,  # 代码放到下一页展示
                         'elements': [
                             {
                                 'type': 'paragraph',
@@ -299,7 +307,7 @@ self.play(
             {
                 'vgroups': [
                     {
-                        'wait': 10,
+                        'wait': 26,  # 对完整代码
                         'elements': [
                             {
                                 **code_common_config,
@@ -352,7 +360,7 @@ class ShootHowTo(JsonSceneFragment):
         self.play(Write(title_group), run_time=1)
         self.play(FadeIn(subtitle_group, shift=DOWN))
         self.play(Circumscribe(subtitle_arr[1], run_time=4, color=BLUE))
-        self.wait(17)
+        self.wait(10)
         title_to_remove = VGroup(title_group, subtitle_group)
         return title_to_remove
 
@@ -360,4 +368,4 @@ class ShootHowTo(JsonSceneFragment):
         title_to_remove = self.show_title()
         self.my_setup(scene_cfg, title_to_remove)
         self.build()
-        self.show_ending(self.section_to_remove, 16)
+        self.show_ending(self.section_to_remove, 18)

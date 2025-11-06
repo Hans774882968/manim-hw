@@ -73,6 +73,7 @@ interface AnimationDescription {
 }
 
 interface VGroupData extends NestedVGroupElement {
+  vg_buff?: number;
   wait?: number; // 每个 vgroup 渲染后的等待时间（秒）。默认为 0
   anime?: AnimationDescription[];
 }

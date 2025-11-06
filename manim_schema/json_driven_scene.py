@@ -264,9 +264,11 @@ class JsonDrivenScene(Scene):
 
                 # 第一个 vgroup 在标题下方，后续 vgroup 依次堆叠在前一个下方
                 if vgroups_in_block:
-                    vgroups_in_block[0].next_to(title_mob, DOWN, buff=0.8)
+                    first_vg_buff = vg_data_list[0].get("vg_buff", 0.8)
+                    vgroups_in_block[0].next_to(title_mob, DOWN, buff=first_vg_buff)
                     for i in range(1, len(vgroups_in_block)):
-                        vgroups_in_block[i].next_to(vgroups_in_block[i - 1], DOWN, buff=0.5)
+                        vg_buff = vg_data_list[i].get("vg_buff", 0.5)
+                        vgroups_in_block[i].next_to(vgroups_in_block[i - 1], DOWN, buff=vg_buff)
 
                 for vg, vg_data in zip(vgroups_in_block, vg_data_list):
                     vg_data_operations = vg_data.get("operations", lambda _: ...)
