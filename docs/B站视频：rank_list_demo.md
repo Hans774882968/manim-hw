@@ -7,3 +7,13 @@
 图片来源：在 https://conghangdaola.com/ 截图
 
 大佬，接下来请帮我修改下面的manim代码，实现：FadeIn一张图片`assets\rank_list_demo\谁会React Fiber.jpg`，它的初始宽度和高度都设置为1.2倍`content_rect`一行的高度，初始位置在屏幕中心。等待20秒后，让它移向“夯”那行的`content_rect`的第一个位置，并且在移动的同时，让动画和宽度、高度缩小为与`content_rect`一行的高度一致。接下来FadeIn第二张图片`assets\rank_list_demo\服务员.jpg`，后续过程都和第一张图片类似，但它最后要移向“夯”那行的`content_rect`的第二个位置
+
+## 旁白
+
+```bash
+edge-tts --voice zh-CN-XiaoxiaoNeural --file docs\视频文字稿：rank_list_demo.md --write-media media\bili\rank_list_demo\rank_list_demo.mp3 --write-subtitles media\bili\rank_list_demo\rank_list_demo.srt
+```
+
+## B站发布：标题、标签、简介…
+
+标题：《【manim】从夯到拉锐评程序员失业出路（附制作教程）》

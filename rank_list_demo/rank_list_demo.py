@@ -73,6 +73,7 @@ class RankListDemo(Scene):
 
         rank_list_rows.arrange(DOWN, buff=0)
         self.add(rank_list_rows)
+        self.wait(10)
 
         img_initial_height = 2 * row_height
         img_final_height = row_height - 0.5 * STROKE_LOGIC_HEIGHT
@@ -88,11 +89,10 @@ class RankListDemo(Scene):
 
         img2 = ImageMobject(r"assets\rank_list_demo\服务员.jpg")
         img2.scale_to_fit_height(img_initial_height)
-
         self.play(FadeIn(img2))
         self.wait(10)
         self.play(
-            img2.animate.scale_to_fit_height(img_final_height).next_to(img1, RIGHT, buff=0),
+            img2.animate.scale_to_fit_height(img_final_height).next_to(label_rect_list[3], RIGHT, buff=STROKE_LOGIC_WIDTH * 0.5),
             run_time=2
         )
 
@@ -105,21 +105,35 @@ class RankListDemo(Scene):
             run_time=2
         )
 
-        img4 = ImageMobject(r"assets\rank_list_demo\进厂.jpg")
+        img4 = ImageMobject(r"assets\rank_list_demo\进厂.png")
         img4.scale_to_fit_height(img_initial_height)
         self.play(FadeIn(img4))
         self.wait(10)
         self.play(
-            img4.animate.scale_to_fit_height(img_final_height).next_to(label_rect_list[3], RIGHT, buff=STROKE_LOGIC_WIDTH * 0.5),
+            img4.animate.scale_to_fit_height(img_final_height).next_to(img2, RIGHT, buff=0),
             run_time=2
         )
 
-        img5 = ImageMobject(r"assets\rank_list_demo\葛优躺.jpg")
-        img5.scale_to_fit_height(img_initial_height)
+        img5 = ImageMobject(r"assets\rank_list_demo\餐饮创业.png")
+        img5.scale_to_fit_height(2.5 * row_height)
         self.play(FadeIn(img5))
         self.wait(10)
         self.play(
             img5.animate.scale_to_fit_height(img_final_height).next_to(label_rect_list[4], RIGHT, buff=STROKE_LOGIC_WIDTH * 0.5),
+            run_time=2
+        )
+
+        img6 = ImageMobject(r"assets\rank_list_demo\葛优躺.jpg")
+        img6.scale_to_fit_height(img_initial_height)
+
+        self.play(FadeIn(img6))
+        self.wait(10)
+        self.play(
+            img6.animate.scale_to_fit_height(1.5 * row_height).next_to(label_rect_list[0], RIGHT, buff=STROKE_LOGIC_WIDTH * 0.5),
+            run_time=2
+        )
+        self.play(
+            img6.animate.scale_to_fit_height(img_final_height).next_to(img5, RIGHT, buff=0),
             run_time=2
         )
 
