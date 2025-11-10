@@ -3,14 +3,14 @@ import random
 
 
 class MovingWatermark(Text):
-    def __init__(self, text: str, **kwargs):
+    def __init__(self, text: str, rand_mode=False, **kwargs):
         super().__init__(text, **kwargs)
         self.move_to(config.frame_width / 2 * RIGHT + config.frame_height / 2 * DOWN)
         self.velocity = np.array([
             random.uniform(-0.6, -0.3),
             random.uniform(0.3, 0.6),
             0.0
-        ])
+        ]) if rand_mode else np.array([-0.4114, 0.514, 0.0])
 
     def update_position(self, mob, dt):
         """

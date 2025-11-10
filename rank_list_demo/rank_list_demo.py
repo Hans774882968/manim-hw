@@ -73,7 +73,7 @@ class RankListDemo(Scene):
 
         rank_list_rows.arrange(DOWN, buff=0)
         self.add(rank_list_rows)
-        self.wait(10)
+        self.wait(8)  # 首先出场的自然是
 
         img_initial_height = 2 * row_height
         img_final_height = row_height - 0.5 * STROKE_LOGIC_HEIGHT
@@ -81,60 +81,66 @@ class RankListDemo(Scene):
         img1 = ImageMobject(r"assets\rank_list_demo\谁会React Fiber.jpg")
         img1.scale_to_fit_height(img_initial_height)
         self.play(FadeIn(img1))
-        self.wait(10)
+        self.wait(26)  # 所以主包只能给它顶级了
         self.play(
             img1.animate.scale_to_fit_height(img_final_height).next_to(label_rect_list[1], RIGHT, buff=STROKE_LOGIC_WIDTH * 0.5),
-            run_time=2
+            run_time=1.5
         )
+        self.wait(1.5)  # 接着是服务员
 
         img2 = ImageMobject(r"assets\rank_list_demo\服务员.jpg")
         img2.scale_to_fit_height(img_initial_height)
         self.play(FadeIn(img2))
-        self.wait(10)
+        self.wait(24)  # 所以主包给到它NPC
         self.play(
             img2.animate.scale_to_fit_height(img_final_height).next_to(label_rect_list[3], RIGHT, buff=STROKE_LOGIC_WIDTH * 0.5),
             run_time=2
         )
+        self.wait(1.5)  # 接着是保安
 
         img3 = ImageMobject(r"assets\rank_list_demo\爷们要战斗.png")
         img3.scale_to_fit_height(2.5 * row_height)
         self.play(FadeIn(img3))
-        self.wait(10)
+        self.wait(36)  # 这里给到人上人吧
         self.play(
             img3.animate.scale_to_fit_height(img_final_height).next_to(label_rect_list[2], RIGHT, buff=STROKE_LOGIC_WIDTH * 0.5),
             run_time=2
         )
+        self.wait()  # 出路4
 
         img4 = ImageMobject(r"assets\rank_list_demo\进厂.png")
         img4.scale_to_fit_height(img_initial_height)
         self.play(FadeIn(img4))
-        self.wait(10)
+        self.wait(23)  # 这里给到NPC
         self.play(
             img4.animate.scale_to_fit_height(img_final_height).next_to(img2, RIGHT, buff=0),
-            run_time=2
+            run_time=1.5
         )
+        self.wait(1.5)  # 重量级的来了，创业！
 
         img5 = ImageMobject(r"assets\rank_list_demo\餐饮创业.png")
         img5.scale_to_fit_height(2.5 * row_height)
         self.play(FadeIn(img5))
-        self.wait(10)
+        self.wait(27)  # 不给到拉
         self.play(
             img5.animate.scale_to_fit_height(img_final_height).next_to(label_rect_list[4], RIGHT, buff=STROKE_LOGIC_WIDTH * 0.5),
-            run_time=2
+            run_time=1.5
         )
+        self.wait(1.5)  # 最后是回老家
 
         img6 = ImageMobject(r"assets\rank_list_demo\葛优躺.jpg")
         img6.scale_to_fit_height(img_initial_height)
 
         self.play(FadeIn(img6))
-        self.wait(10)
+        self.wait(21)  # 主包这里给到…
         self.play(
             img6.animate.scale_to_fit_height(1.5 * row_height).next_to(label_rect_list[0], RIGHT, buff=STROKE_LOGIC_WIDTH * 0.5),
-            run_time=2
+            run_time=1.713  # 00:02:49,412 --> 00:02:51,125
         )
+        self.wait(3)  # 必须给到拉！
         self.play(
             img6.animate.scale_to_fit_height(img_final_height).next_to(img5, RIGHT, buff=0),
-            run_time=2
+            run_time=1.6  # 00:02:53,587 --> 00:02:55,187
         )
 
         self.wait(5)
