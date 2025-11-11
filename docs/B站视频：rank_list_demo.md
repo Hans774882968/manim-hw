@@ -12,6 +12,7 @@
 
 ```bash
 edge-tts --voice zh-CN-XiaoxiaoNeural --file docs\视频文字稿：rank_list_demo.md --write-media media\bili\rank_list_demo\rank_list_demo.mp3 --write-subtitles media\bili\rank_list_demo\rank_list_demo.srt
+edge-tts --voice zh-CN-XiaoxiaoNeural --file docs\视频文字稿：rank_list_how_to.md --write-media media\bili\rank_list_demo\rank_list_how_to.mp3 --write-subtitles media\bili\rank_list_demo\rank_list_how_to.srt
 ```
 
 ## B站发布：标题、标签、简介…

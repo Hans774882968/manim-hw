@@ -1,0 +1,37 @@
+{
+  "srt_file": "media\\bili\\rank_list_demo\\rank_list_how_to.srt",
+  "replacements": [
+    [
+      "汉斯",
+      "Hans"
+    ],
+    [
+      "V Group",
+      "VGroup"
+    ],
+    [
+      "label rect的get center方法",
+      "label_rect.get_center()"
+    ],
+    [
+      "next to",
+      "next_to"
+    ],
+    [
+      "to edge",
+      "to_edge"
+    ],
+    [
+      "content box",
+      "content-box"
+    ],
+    [
+      "STROKE LOGIC WIDTH",
+      "STROKE_LOGIC_WIDTH"
+    ],
+    [
+      "row height",
+      "row_height"
+    ]
+  ]
+}
