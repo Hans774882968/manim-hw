@@ -6,10 +6,6 @@
       "Hans"
     ],
     [
-      "V Group",
-      "VGroup"
-    ],
-    [
       "label rect的get center方法",
       "label_rect.get_center()"
     ],
@@ -30,8 +26,16 @@
       "STROKE_LOGIC_WIDTH"
     ],
     [
+      "STROKE LOGIC HEIGHT",
+      "STROKE_LOGIC_HEIGHT"
+    ],
+    [
       "row height",
       "row_height"
+    ],
+    [
+      "scale to fit height",
+      "scale_to_fit_height"
     ]
   ]
 }

@@ -7,6 +7,8 @@ sys.path.append(os.getcwd())
 from m_objects.moving_watermark import MovingWatermark
 from manim_schema.json_driven_scene import JsonSceneFragment
 
+BACKGROUND_IMAGE_PATH = r'assets\rank_list_demo\rank_list_how_to_bg.png'
+
 code_common_config = {
     'type': 'code',
     'language': 'python',
@@ -19,7 +21,7 @@ code_common_config = {
 scene_cfg = [
     {
         'title': '学习材料',
-        'wait': 20,
+        'wait': 13,  # 做从夯到拉锐评视频
         'blocks': [
             {
                 'vgroups': [
@@ -48,7 +50,7 @@ scene_cfg = [
     },
     {
         'title': '视频制作的主要步骤',
-        'wait': 20,
+        'wait': 19,  # 首先讲怎么画背景图
         'blocks': [
             {
                 'vgroups': [
@@ -75,7 +77,7 @@ scene_cfg = [
         'title': '画从夯到拉的背景图',
         'blocks': [
             {
-                'wait': 20,
+                'wait': 20,  # 接下来简单说下代码
                 'vgroups': [
                     {
                         'arrange': {'aligned_edge': 'left'},
@@ -104,7 +106,7 @@ scene_cfg = [
                 ]
             },
             {
-                'wait': 20,
+                'wait': 19,  # 接下来是难点
                 'vgroups': [
                     {
                         'elements': [
@@ -144,7 +146,7 @@ for i in range(row_count):
         'title': '从夯到拉背景图 - 边框宽度问题',  # 为了解决报错而拆分 It looks like the scene contains a lot of sub-mobjects
         'blocks': [
             {
-                'wait': 20,
+                'wait': 78,  # 接着看怎么画素材
                 'vgroups': [
                     {
                         'arrange': {'aligned_edge': 'left'},
@@ -191,13 +193,12 @@ row_height = (total_height - STROKE_LOGIC_HEIGHT) / row_count
                 'vgroups': [
                     {
                         'arrange': {'aligned_edge': 'left'},
-                        'wait': 20,
+                        'wait': 28,  # 然后看怎么让
                         'elements': [
                             {
                                 **code_common_config,
                                 'content': r'''
 img_initial_height = 2 * row_height
-img_final_height = row_height - 0.5 * STROKE_LOGIC_HEIGHT
 img2 = ImageMobject(r"assets\rank_list_demo\服务员.jpg")
 img2.scale_to_fit_height(img_initial_height)
 self.play(FadeIn(img2))
@@ -229,12 +230,13 @@ self.play(FadeIn(img2))
                 'vgroups': [
                     {
                         'arrange': {'aligned_edge': 'left'},
-                        'wait': 20,
+                        'wait': 107,  # 对完整代码
                         'elements': [
                             {
                                 **code_common_config,
                                 'paragraph_config': {'font_size': 14},
                                 'content': '''
+img_final_height = row_height - 0.5 * STROKE_LOGIC_HEIGHT
 self.wait(11.451)
 self.play(
     img2.animate.scale_to_fit_height(img_final_height)
@@ -257,7 +259,7 @@ self.play(
                             {
                                 'type': 'text',
                                 'font_size': 24,
-                                'content': '代码优化建议：每行维护一个数组，当前元素要紧挨着数组最后一个元素',
+                                'content': '代码优化：每行维护一个数组，当前元素要紧挨着数组最后一个元素',
                             }
                         ],
                     }
@@ -295,6 +297,7 @@ class RankListHowTo(JsonSceneFragment):
         return title_to_remove
 
     def construct(self):
+        self.show_bg(BACKGROUND_IMAGE_PATH)
         self.add_watermark()
         title_to_remove = self.show_title()
         self.my_setup(scene_cfg, title_to_remove)

@@ -138,9 +138,9 @@ class JsonDrivenScene(Scene):
         self.vgroup_pool = {}
         self.section_to_remove = None
 
-    def show_bg(self):
-        background = ImageMobject(BACKGROUND_IMAGE_PATH)
-        background.set_opacity(BACKGROUND_OPACITY)
+    def show_bg(self, filename_or_array=BACKGROUND_IMAGE_PATH, opacity=BACKGROUND_OPACITY):
+        background = ImageMobject(filename_or_array)
+        background.set_opacity(opacity)
         background.stretch_to_fit_width(config.frame_width)
         background.stretch_to_fit_height(config.frame_height)
         self.add(background)
