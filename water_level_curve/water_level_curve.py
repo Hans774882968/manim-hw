@@ -1,5 +1,5 @@
 from manim import *
-import numpy as np
+from plane_geometry import *
 import sympy as sp
 
 S_val = 120   # 水箱底面积
@@ -84,6 +84,32 @@ def linear_model_H_parabola(h):
 
 
 class WaterLevelCurve(Scene):
+    def put_cylinder_in_water_tank(self):
+        water_tank = PlaneCuboid(2, 1, 4)
+        self.play(FadeIn(water_tank.cuboid))
+        water = PlaneCuboid(2, 1, 2, color=BLUE, front_center=(0, -1), need_top_face=True)
+        self.play(FadeIn(water.cuboid))
+        cylinder = PlaneCylinder(0.5, 2, center=(0.25, 1.25))
+        self.play(FadeIn(cylinder.cylinder))
+        self.wait(2)
+
+        for _ in range(3):
+            add_height_animates1 = water.add_height(0.5)
+            self.play(
+                cylinder.cylinder.animate.shift(2 * DOWN),
+                *add_height_animates1
+            )
+            self.wait()
+            add_height_animates2 = water.add_height(-0.5)
+            self.play(
+                cylinder.cylinder.animate.shift(2 * UP),
+                *add_height_animates2
+            )
+            self.wait()
+
+        geometries_to_move = VGroup(water_tank.cuboid, water.cuboid, cylinder.cylinder)
+        self.play(geometries_to_move.animate.shift(5.5 * RIGHT + 2 * UP).scale(0.5))
+
     def show_cone_h_H_curve(self, cone_h_min, cone_h_max, cone_H_min, cone_H_max):
         axes1 = Axes(
             x_range=(cone_h_min, cone_h_max),
@@ -151,7 +177,7 @@ class WaterLevelCurve(Scene):
             y_range=(err_min, err_max, 0.08),
             axis_config={"include_numbers": True}
         )
-        axes_labels2 = axes2.get_axis_labels(x_label="h", y_label=r"H_{\text{linear}} - H")
+        axes_labels2 = axes2.get_axis_labels(x_label="h", y_label=MathTex(r"H_{\text{linear}} - H", font_size=28))
         title2 = Text("圆锥部分浸没时的误差分析", font_size=36).to_edge(UP)
 
         err_h_vals = np.linspace(err_cone_h_min, err_cone_h_max, 250)
@@ -250,7 +276,7 @@ class WaterLevelCurve(Scene):
             y_range=(err_min, err_max, 0.006),
             axis_config={"include_numbers": True}
         )
-        axes_labels2 = axes2.get_axis_labels(x_label="h", y_label=r"H_{\text{linear}} - H")
+        axes_labels2 = axes2.get_axis_labels(x_label="h", y_label=MathTex(r"H_{\text{linear}} - H", font_size=28))
         title2 = Text("抛物线旋转体部分浸没时的误差分析", font_size=36).to_edge(UP)
 
         err_h_vals = np.linspace(err_h_min, err_h_max, 600)
@@ -279,10 +305,12 @@ class WaterLevelCurve(Scene):
         self.play(Create(error_curve), run_time=2)
         self.wait(4)
 
-        parabola_err_curve_to_remove = VGroup(title2, axes2, axes_labels2, error_curve)
+        parabola_err_curve_to_remove = VGroup(title2, initial_view, error_curve)
         return parabola_err_curve_to_remove
 
     def construct(self):
+        self.put_cylinder_in_water_tank()
+
         cone_h_min, cone_h_max = 0, 20
         cone_H_min, cone_H_max = 0, 16
 
@@ -296,4 +324,6 @@ class WaterLevelCurve(Scene):
             parabola_h_min, parabola_h_max, parabola_H_min, parabola_H_max
         )
 
-        self.show_parabola_err_H_H_linear_curve(parabola_h_max, parabola_title, parabola_h_H_to_remove)
+        parabola_err_curve_to_remove = self.show_parabola_err_H_H_linear_curve(parabola_h_max, parabola_title, parabola_h_H_to_remove)
+        self.play(FadeOut(parabola_err_curve_to_remove))
+        self.wait(2)
