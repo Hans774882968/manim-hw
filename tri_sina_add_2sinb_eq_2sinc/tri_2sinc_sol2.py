@@ -9,10 +9,13 @@ class Tri2sinCSol2(Scene):
         background.stretch_to_fit_height(config.frame_height)
         self.add(background)
 
-    def show_method2(self):
+    def show_method2(self, last_section_to_remove=None):
         title = Text("法2：纯三角变换", font_size=60, color=YELLOW)
         title.to_edge(UP, buff=0.5)
-        self.play(Write(title))
+        if last_section_to_remove:
+            self.play(ReplacementTransform(last_section_to_remove, title))
+        else:
+            self.play(Write(title))
         self.wait(8)  # “注意到约束方程里只有 sinA 系数是1”
 
         step1 = VGroup(
@@ -137,6 +140,9 @@ class Tri2sinCSol2(Scene):
         self.play(Create(frame_box))
         self.wait(10)
         self.remove(frame_box)
+
+        method2_to_remove = VGroup(title, final_page_group)
+        return method2_to_remove
 
     def construct(self):
         self.show_bg()

@@ -70,15 +70,15 @@ class TriSinAAdd2sinBEq2sinC(Scene):
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.3)
         thought.next_to(title, DOWN, buff=0.5)
         self.play(Write(thought))
-        self.wait(16)  # “这个视频讲难度最小的解法3”
+        self.wait(20)  # “这个视频讲难度最小的解法3”
 
         thought_to_remove = VGroup(title, thought)
         return thought_to_remove
 
-    def show_method3(self, thought_to_remove):
+    def show_method3(self, last_section_to_remove):
         title = Text("法3：双曲线", font_size=60, color=YELLOW)
         title.to_edge(UP, buff=0.5)
-        self.play(ReplacementTransform(thought_to_remove, title))
+        self.play(ReplacementTransform(last_section_to_remove, title))
         self.wait(16)  # “注意到 a/2 = c-b 满足”
 
         let_a_eq_2 = VGroup(

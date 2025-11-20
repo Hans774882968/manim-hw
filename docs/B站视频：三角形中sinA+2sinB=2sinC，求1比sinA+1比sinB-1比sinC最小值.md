@@ -42,6 +42,8 @@ edge-tts --voice zh-CN-XiaoxiaoNeural --file docs\视频文字稿：tri_sina_add
 edge-tts --voice zh-CN-XiaoxiaoNeural --file docs\视频文字稿：tri_sina_add_2sinb_eq_2sinc-纯三角变换.md --write-media media\bili\tri_sina_add_2sinb_eq_2sinc\tri_2sinc_sol2.mp3 --write-subtitles media\bili\tri_sina_add_2sinb_eq_2sinc\tri_2sinc_sol2.srt
 
 edge-tts --voice zh-CN-XiaoxiaoNeural --file docs\视频文字稿：tri_sina_add_2sinb_eq_2sinc-正弦定理+余弦定理.md --write-media media\bili\tri_sina_add_2sinb_eq_2sinc\tri_2sinc_sol1.mp3 --write-subtitles media\bili\tri_sina_add_2sinb_eq_2sinc\tri_2sinc_sol1.srt
+
+edge-tts --voice zh-CN-XiaoxiaoNeural --file docs\视频文字稿：tri_2sinc_merged.md --write-media media\bili\tri_sina_add_2sinb_eq_2sinc\tri_2sinc_merged.mp3 --write-subtitles media\bili\tri_sina_add_2sinb_eq_2sinc\tri_2sinc_merged.srt
 ```
 
 顺便做个音频：
@@ -50,9 +52,15 @@ edge-tts --voice zh-CN-XiaoxiaoNeural --file docs\视频文字稿：tri_sina_add
 edge-tts --voice zh-CN-XiaoxiaoNeural --text "谢谢大佬们的三连加关注" --write-media D:\视频制作素材\三连+关注.mp3 --write-subtitles D:\视频制作素材\三连+关注.srt
 ```
 
-BGM仍然用《羽根》
+BGM仍然用《羽根》。新增P4用《qq堂-野外&黑龙王国》
 
 想要在“强注意力 → 打咩 ×”下面插入一个gif，但manim不支持。那就用kdenlive做了
+
+封面：
+
+```powershell
+magick tri_sina_add_2sinb_eq_2sinc-封面.png -resize 1920x2560! tri_sina_add_2sinb_eq_2sinc-封面-4x3.png
+```
 
 ## B站发布：标题、标签、简介…
 
@@ -65,6 +73,7 @@ BGM仍然用《羽根》
 题目来源： https://www.bilibili.com/video/BV12DJXzoEgK
 那道更简单的题： https://zhidao.baidu.com/question/744659451359792932.html
 manim 源码传送门：
+- 合并版: https://github.com/Hans774882968/manim-hw/blob/main/tri_sina_add_2sinb_eq_2sinc/tri_2sinc_merged.py
 - P1: https://github.com/Hans774882968/manim-hw/blob/main/tri_sina_add_2sinb_eq_2sinc/tri_sina_add_2sinb_eq_2sinc.py
 - P2: https://github.com/Hans774882968/manim-hw/blob/main/tri_sina_add_2sinb_eq_2sinc/tri_2sinc_sol1.py
 - P3: https://github.com/Hans774882968/manim-hw/blob/main/tri_sina_add_2sinb_eq_2sinc/tri_2sinc_sol2.py
@@ -83,6 +92,18 @@ manim 源码传送门：
 02:06 后记
 ```
 
+新增P4章节：
+
+```
+00:00 片头
+00:13 题干
+00:42 思想
+00:59 法1：正弦定理+余弦定理
+02:42 法2：纯三角变换
+03:58 法3：双曲线
+04:59 后记
+```
+
 3个P的互动引导都加在末尾
 
 投票弹幕仅加在P1：00:27
@@ -93,3 +114,45 @@ manim 源码传送门：
 - 一般般
 - 踮踮脚能够到
 - 踮脚也够不着
+
+## 抖音
+
+标题：《用3种解法做这道颇难的解三角形题：siA+2siB=2siC》
+
+忘记加“挑战：数学思维”了QAQ
+
+话题： 学渣逆袭, 高中生必看, 解三角形, 双曲线, 三角函数
+
+简介diff：去掉了P1~P3，因为字数太多
+
+章节diff：无
+
+抖音成功添加评论：
+
+```markdown
+简介放不下，这里补充一下~ manim 源码文件夹传送门： https://github.com/Hans774882968/manim-hw/blob/main/tri_sina_add_2sinb_eq_2sinc
+- 合并版: tri_2sinc_merged.py 这个文件代码很少，基本就是调用了下面的3个文件
+- P1: tri_sina_add_2sinb_eq_2sinc.py
+- P2: tri_2sinc_sol1.py
+- P3: tri_2sinc_sol2.py
+```
+
+小红书发这条评论发现只有自己的账号能看到。我改一下：
+
+```markdown
+简介放不下，这里补充一下~ manim 源码文件夹传送门： github 的 Hans774882968 的 manim-hw 项目的 tri_sina_add_2sinb_eq_2sinc 文件夹
+- 合并版: tri_2sinc_merged.py 这个文件代码最少，基本就是调用了下面的3个文件
+- P1: tri_sina_add_2sinb_eq_2sinc.py
+- P2: tri_2sinc_sol1.py
+- P3: tri_2sinc_sol2.py
+```
+
+改了仍然发不出来！不敢乱玩了！再搞不知道会不会变僵尸号！以后再发视频，像这种有链接的评论，考虑用截图发。这个视频就不再发了
+
+## 小红书
+
+标题：《用3种解法做这道颇难的解三角形 sinA+2sinB》
+
+标签： 学渣逆袭, 高中生必看, 双曲线, manim, 解三角形, 三角恒等变换, 三角函数
+
+简介、章节和抖音一样

@@ -9,10 +9,13 @@ class Tri2sinCSol1(Scene):
         background.stretch_to_fit_height(config.frame_height)
         self.add(background)
 
-    def show_method1(self):
+    def show_method1(self, last_section_to_remove=None):
         title = Text("法1：正弦定理 + 余弦定理", font_size=60, color=YELLOW)
         title.to_edge(UP, buff=0.5)
-        self.play(Write(title))
+        if last_section_to_remove:
+            self.play(ReplacementTransform(last_section_to_remove, title))
+        else:
+            self.play(Write(title))
         self.wait(10)  # “我搜到另一道相似但更简单的题”
 
         # Step 0: 讲解相似但更简单的题
@@ -204,6 +207,9 @@ class Tri2sinCSol1(Scene):
         self.play(Create(frame_box))
         self.wait(10)
         self.remove(frame_box)
+
+        method1_to_remove = VGroup(title, step6)
+        return method1_to_remove
 
     def construct(self):
         self.show_bg()
