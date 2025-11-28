@@ -53,3 +53,39 @@ P1加投票弹幕：00:15
 P2加评分弹幕：浅薄与魔怔程度 00:05
 
 P2的互动引导加在00:48
+
+封面：
+
+```powershell
+magick shoot_practice-封面.png -resize 1920x2560! shoot_practice-封面-4x3.png
+magick shoot_practice-封面.png -resize 1080x1080! shoot_practice-封面-1x1.png
+```
+
+## 抖音
+
+标题：《一起学习如何用manim做一条打靶视频（内含哲学meme）》
+
+标签： Python, manim, 经验分享, 3Blue1Brown, 尼采
+
+挑战：python（1294跟拍）
+
+简介diff：无
+
+章节diff：
+
+- 02:58 过渡动画的两种方法没区别
+- 05:24 教程后记
+- 05:40 成品
+
+添加合集：manim开发教程 这里收录manim动画的开发教程~
+
+## 小红书
+
+标题：《来学习如何用manim做打靶视频（含哲学meme》
+
+标签： Python, manim, 经验分享, 3Blue1Brown, 3blue1brown, 尼采, 哲学, meme
+
+章节diff：
+
+- 05:24 教程后记
+- 05:40 成品
