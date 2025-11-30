@@ -59,6 +59,7 @@ P2的互动引导加在00:48
 ```powershell
 magick shoot_practice-封面.png -resize 1920x2560! shoot_practice-封面-4x3.png
 magick shoot_practice-封面.png -resize 1080x1080! shoot_practice-封面-1x1.png
+magick shoot_merged_mosaic-封面.png -resize 1920x2560! shoot_merged_mosaic-封面-4x3.png
 ```
 
 ## 抖音
@@ -69,7 +70,21 @@ magick shoot_practice-封面.png -resize 1080x1080! shoot_practice-封面-1x1.pn
 
 挑战：python（1294跟拍）
 
-简介diff：无
+简介diff：只保留第一句话，其他的都扔掉，因为莫名其妙没有推流，好恶心！同时自我回复里的“通义千问”改成“tyqw”
+
+注：第二次投抖音，使用以上简介diff，发现还是没有推流。所以第三次投抖音，我打算给原视频和自我回复的图做好马赛克，然后简介什么的不变
+
+### kdenlive 马赛克
+
+X坐标：449 729 996 1266
+Y坐标：336 607 874
+马赛克矩形大小：200 50
+
+### gimp 马赛克
+
+暂时不知道原因，但操作前要给png图像加一个alpha通道，否则只有最后一个添加的矩形区域能看到马赛克，前面的矩形区域都是黑色方块。
+
+用“矩形选择工具”选好要马赛克的区域，然后上面菜单，滤镜→模糊→像素化，在弹出的设置窗口里选择方块
 
 章节diff：
 
