@@ -29,8 +29,8 @@ class OpeningAnimation(Scene):
         nickname_parts.arrange(RIGHT, buff=0)
         nickname_parts.next_to(avatar, DOWN, buff=0.8)
 
-        self.play(FadeIn(avatar), Write(nickname_parts), run_time=1.5)
-        self.wait(0.6)
+        self.play(FadeIn(avatar), Write(nickname_parts), run_time=0.8)
+        self.wait(0.5)
 
         # ========== 第二阶段：头像与“Hans”消失；其余四字分行排布 ==========
         # 保存“码数理哲”以供后续使用
@@ -55,7 +55,7 @@ class OpeningAnimation(Scene):
             Transform(nickname_parts[2], char_math),
             Transform(nickname_parts[3], char_physics),
             Transform(nickname_parts[4], char_phil),
-            run_time=0.8
+            run_time=0.5
         )
 
         # ========== 第三阶段：同时显示对应文字与底部引言 ==========
@@ -78,10 +78,10 @@ class OpeningAnimation(Scene):
             Write(missing_texts[3]),
             Write(quote_line1),
             Write(quote_line2),
-            run_time=1.5
+            run_time=0.8
         )
 
-        self.wait(1)
+        self.wait(0.5)
 
         self.play(
             FadeOut(avatar),
@@ -89,4 +89,5 @@ class OpeningAnimation(Scene):
             FadeOut(missing_texts),
             FadeOut(quote_line1),
             FadeOut(quote_line2),
+            run_time=0.8
         )
