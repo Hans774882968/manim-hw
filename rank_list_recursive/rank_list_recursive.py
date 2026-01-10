@@ -110,13 +110,13 @@ class RankListDemo(Scene):
 
         return RankListBg(rank_list_rows, label_rect_list, content_rect_list)
 
-    def bg_insert_into_rank(self, to_shrink: Group, next_bg: RankListBg, label_index: int, img_final_height):
+    def bg_insert_into_rank(self, to_shrink: Group, next_bg: RankListBg, label_index: int, img_final_height, pre_wait=0, move_run_time=1):
         self.play(to_shrink.animate.scale(0.8))
+        self.wait(pre_wait)
         self.play(
             to_shrink.animate.scale_to_fit_height(img_final_height).next_to(next_bg.label_rect_list[label_index], RIGHT, buff=self.RANK_LIST_BG_CFG['content_left_buff']),
-            run_time=1.5
+            run_time=move_run_time
         )
-        self.wait()
 
     def construct(self):
         self.add_watermark()
@@ -146,6 +146,8 @@ class RankListDemo(Scene):
         vue_svg_mo.scale_to_fit_height(img_initial_height)
         vue_svg_mo.next_to(vite_png_mo, RIGHT)
 
+        self.wait(7)  # 首先出场的是
+
         self.play(
             LaggedStart(
                 FadeIn(react_svg_mo),
@@ -153,28 +155,30 @@ class RankListDemo(Scene):
                 FadeIn(ts_svg_mo),
                 FadeIn(vite_png_mo),
                 FadeIn(vue_svg_mo),
-                lag_ratio=0.3
+                lag_ratio=0.3,
+                run_time=4  # 这句话说完的耗时大概比4s多一点
             )
         )
+        self.wait(9)  # 酌情给到NPC吧
         self.play(
             react_svg_mo.animate.scale_to_fit_height(img_final_height).next_to(bg1.label_rect_list[3], RIGHT, buff=self.RANK_LIST_BG_CFG['content_left_buff']),
-            run_time=0.4
+            run_time=0.3
         )
         self.play(
             tailwind_svg_mo.animate.next_to(react_svg_mo, RIGHT, buff=self.RANK_LIST_BG_CFG['svg_final_gap']),
-            run_time=0.4
+            run_time=0.3
         )
         self.play(
             ts_svg_mo.animate.scale_to_fit_height(img_final_height).next_to(tailwind_svg_mo, RIGHT, buff=self.RANK_LIST_BG_CFG['svg_final_gap']),
-            run_time=0.4
+            run_time=0.3
         )
         self.play(
             vite_png_mo.animate.scale_to_fit_height(img_final_height).next_to(ts_svg_mo, RIGHT, buff=self.RANK_LIST_BG_CFG['svg_final_gap']),
-            run_time=0.4
+            run_time=0.3
         )
         self.play(
             vue_svg_mo.animate.scale_to_fit_height(img_final_height).next_to(vite_png_mo, RIGHT, buff=self.RANK_LIST_BG_CFG['svg_final_gap']),
-            run_time=0.4
+            run_time=0.3
         )
         frontend_svg_npc = Group(react_svg_mo, tailwind_svg_mo, ts_svg_mo, vite_png_mo, vue_svg_mo)
 
@@ -188,9 +192,11 @@ class RankListDemo(Scene):
             LaggedStart(
                 FadeIn(angular_svg_mo),
                 FadeIn(redux_svg_mo),
-                lag_ratio=0.3
+                lag_ratio=0.3,
+                run_time=2  # “接着出场的是Angular和Redux”说完的耗时大概比2s多一点
             )
         )
+        self.wait(3)  # 比“拉完了”靠前一点点，耗时2s左右
         self.play(
             angular_svg_mo.animate.scale_to_fit_height(img_final_height).next_to(bg1.label_rect_list[4], RIGHT, buff=self.RANK_LIST_BG_CFG['content_left_buff']),
             run_time=0.5
@@ -204,13 +210,16 @@ class RankListDemo(Scene):
         bun_svg_mo = SVGMobject(BUN_SVG)
         bun_svg_mo.scale_to_fit_height(img_initial_height)
         self.play(FadeIn(bun_svg_mo))
+        self.wait(6)  # 给到人上人
         self.play(
             bun_svg_mo.animate.scale_to_fit_height(img_final_height).next_to(bg1.label_rect_list[2], RIGHT, buff=self.RANK_LIST_BG_CFG['content_left_buff']),
+            run_time=0.8
         )
 
         wasm_svg_mo = SVGMobject(WASM_SVG)
         wasm_svg_mo.scale_to_fit_height(img_initial_height)
         self.play(FadeIn(wasm_svg_mo))
+        self.wait(13.5)  # 从“前端大祭司”那句到“综合下给到顶级”之前
         self.play(
             wasm_svg_mo.animate.scale_to_fit_height(img_final_height).next_to(bg1.label_rect_list[1], RIGHT, buff=self.RANK_LIST_BG_CFG['content_left_buff']),
         )
@@ -225,9 +234,11 @@ class RankListDemo(Scene):
             LaggedStart(
                 FadeIn(postgresql_svg_mo),
                 FadeIn(redis_svg_mo),
-                lag_ratio=0.3
+                lag_ratio=0.3,
+                run_time=2
             )
         )
+        self.wait(6)  # 必须给到夯！
         self.play(
             postgresql_svg_mo.animate.scale_to_fit_height(img_final_height).next_to(bg1.label_rect_list[0], RIGHT, buff=self.RANK_LIST_BG_CFG['content_left_buff']),
             run_time=0.5
@@ -241,16 +252,19 @@ class RankListDemo(Scene):
         pandas_svg_mo = SVGMobject(PANDAS_SVG)
         pandas_svg_mo.scale_to_fit_height(img_initial_height)
         self.play(FadeIn(pandas_svg_mo))
+        self.wait(5)  # 跟前端坐一桌，拉完了
         self.play(
             pandas_svg_mo.animate.scale_to_fit_height(img_final_height).next_to(redux_svg_mo, RIGHT, buff=self.RANK_LIST_BG_CFG['svg_final_gap']),
         )
 
         # TODO: 对顺序有依赖，这可能不是一个好做法。 bg1 必须放最前面
         to_shrink1 = Group(bg1.rank_list_rows, frontend_svg_npc, frontend_svg_la, bun_svg_mo, wasm_svg_mo, backend_svg_hang, pandas_svg_mo)
-        self.bg_insert_into_rank(to_shrink1, bg2, 0, img_final_height)
+        self.bg_insert_into_rank(to_shrink1, bg2, 0, img_final_height, 5)
+        self.wait(3)
 
         to_shrink2 = Group(bg2.rank_list_rows, to_shrink1)
-        self.bg_insert_into_rank(to_shrink2, bg3, 4, img_final_height)
+        self.bg_insert_into_rank(to_shrink2, bg3, 4, img_final_height, 8)
+        self.wait(3)
 
         to_shrink3 = Group(bg3.rank_list_rows, to_shrink2)
-        self.bg_insert_into_rank(to_shrink3, bg4, 3, img_final_height)
+        self.bg_insert_into_rank(to_shrink3, bg4, 3, img_final_height, 5)
