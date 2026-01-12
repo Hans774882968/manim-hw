@@ -200,7 +200,7 @@ class RankListDemo(Scene):
         )
         self.wait(12)  # 酌情给到NPC吧
         self.play(
-            react_svg_mo.animate.scale_to_fit_height(img_final_height).next_to(bg1.label_rect_list[3], RIGHT, buff=self.RANK_LIST_BG_CFG['content_left_buff']),
+            react_svg_mo.animate.scale_to_fit_height(img_final_height).next_to(bg5.label_rect_list[3], RIGHT, buff=self.RANK_LIST_BG_CFG['content_left_buff']),
             run_time=0.25
         )
         self.play(
@@ -237,7 +237,7 @@ class RankListDemo(Scene):
         )
         self.wait(5)  # 比“拉完了”靠前一点点，耗时4s左右
         self.play(
-            angular_svg_mo.animate.scale_to_fit_height(img_final_height).next_to(bg1.label_rect_list[4], RIGHT, buff=self.RANK_LIST_BG_CFG['content_left_buff']),
+            angular_svg_mo.animate.scale_to_fit_height(img_final_height).next_to(bg5.label_rect_list[4], RIGHT, buff=self.RANK_LIST_BG_CFG['content_left_buff']),
             run_time=0.4
         )
         self.play(
@@ -251,7 +251,7 @@ class RankListDemo(Scene):
         self.play(FadeIn(bun_svg_mo))
         self.wait(8)  # 给到人上人
         self.play(
-            bun_svg_mo.animate.scale_to_fit_height(img_final_height).next_to(bg1.label_rect_list[2], RIGHT, buff=self.RANK_LIST_BG_CFG['content_left_buff']),
+            bun_svg_mo.animate.scale_to_fit_height(img_final_height).next_to(bg5.label_rect_list[2], RIGHT, buff=self.RANK_LIST_BG_CFG['content_left_buff']),
             run_time=0.8
         )
         self.wait(2)  # 等待“接下来我们迎来了”说完
@@ -261,7 +261,7 @@ class RankListDemo(Scene):
         self.play(FadeIn(wasm_svg_mo))
         self.wait(16)  # 从“前端大祭司”那句到“综合下给到顶级”之前
         self.play(
-            wasm_svg_mo.animate.scale_to_fit_height(img_final_height).next_to(bg1.label_rect_list[1], RIGHT, buff=self.RANK_LIST_BG_CFG['content_left_buff']),
+            wasm_svg_mo.animate.scale_to_fit_height(img_final_height).next_to(bg5.label_rect_list[1], RIGHT, buff=self.RANK_LIST_BG_CFG['content_left_buff']),
         )
         self.wait(2)
 
@@ -281,7 +281,7 @@ class RankListDemo(Scene):
         )
         self.wait(8)  # 必须给到夯！
         self.play(
-            postgresql_svg_mo.animate.scale_to_fit_height(img_final_height).next_to(bg1.label_rect_list[0], RIGHT, buff=self.RANK_LIST_BG_CFG['content_left_buff']),
+            postgresql_svg_mo.animate.scale_to_fit_height(img_final_height).next_to(bg5.label_rect_list[0], RIGHT, buff=self.RANK_LIST_BG_CFG['content_left_buff']),
             run_time=0.5
         )
         self.play(
@@ -300,17 +300,17 @@ class RankListDemo(Scene):
         )
         self.wait(2)
 
-        # TODO: 对顺序有依赖，这可能不是一个好做法。 bg1 必须放最前面
-        to_shrink1 = Group(bg1.rank_list_rows, frontend_svg_npc, frontend_svg_la, bun_svg_mo, wasm_svg_mo, backend_svg_hang, pandas_svg_mo)
-        self.bg_insert_into_rank(to_shrink1, bg2, 0, img_final_height, pre_wait=2)
+        # TODO: 对顺序有依赖，这可能不是一个好做法。 bg5 必须放最前面
+        to_shrink5 = Group(bg5.rank_list_rows, frontend_svg_npc, frontend_svg_la, bun_svg_mo, wasm_svg_mo, backend_svg_hang, pandas_svg_mo)
+        self.bg_insert_into_rank(to_shrink5, bg4, 0, img_final_height, pre_wait=2)
         self.wait(3)
 
-        to_shrink2 = Group(bg2.rank_list_rows, to_shrink1)
-        self.bg_insert_into_rank(to_shrink2, bg3, 4, img_final_height, pre_wait=12)
+        to_shrink4 = Group(bg4.rank_list_rows, to_shrink5)
+        self.bg_insert_into_rank(to_shrink4, bg3, 4, img_final_height, pre_wait=12)
         self.wait(3)
 
-        to_shrink3 = Group(bg3.rank_list_rows, to_shrink2)
-        self.bg_insert_into_rank(to_shrink3, bg4, 3, img_final_height, pre_wait=8)
+        to_shrink3 = Group(bg3.rank_list_rows, to_shrink4)
+        self.bg_insert_into_rank(to_shrink3, bg2, 3, img_final_height, pre_wait=8)
         self.wait(3)
 
         npc_hang_video = self.draw_label_rect_list(['NPC', '夯', '原视频'])
@@ -320,11 +320,11 @@ class RankListDemo(Scene):
         )
         self.wait(13)  # 给给视频评夯评NPC必须给到夯！
         self.play(
-            npc_hang_video.animate.scale_to_fit_height(img_final_height).next_to(bg4.label_rect_list[0], RIGHT, buff=self.RANK_LIST_BG_CFG['content_left_buff']),
+            npc_hang_video.animate.scale_to_fit_height(img_final_height).next_to(bg2.label_rect_list[0], RIGHT, buff=self.RANK_LIST_BG_CFG['content_left_buff']),
             run_time=3
         )
         self.wait(2)
 
-        to_shrink4 = Group(bg4.rank_list_rows, npc_hang_video, to_shrink3)
-        self.bg_insert_into_rank(to_shrink4, bg5, 0, img_final_height, pre_wait=3, move_run_time=1.5)
+        to_shrink2 = Group(bg2.rank_list_rows, npc_hang_video, to_shrink3)
+        self.bg_insert_into_rank(to_shrink2, bg1, 0, img_final_height, pre_wait=3, move_run_time=1.5)
         self.wait(3)
