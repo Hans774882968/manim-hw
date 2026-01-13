@@ -165,8 +165,8 @@ class RankListDemo(Scene):
         bg4 = self.draw_rank_list_bg()
         bg5 = self.draw_rank_list_bg()
 
-        img_initial_height = 1.5 * self.RANK_LIST_BG_CFG['row_height']
-        svg_wordmark_initial_height = 0.3 * self.RANK_LIST_BG_CFG['row_height']
+        initial_height_large = 1.5 * self.RANK_LIST_BG_CFG['row_height']
+        initial_height_small = 0.3 * self.RANK_LIST_BG_CFG['row_height']
         img_final_height = self.RANK_LIST_BG_CFG['row_height'] - 0.5 * self.RANK_LIST_BG_CFG['stroke_logic_height']
 
         react_svg_mo = SVGMobject(REACT_SVG)
@@ -174,15 +174,15 @@ class RankListDemo(Scene):
         ts_svg_mo = SVGMobject(TS_SVG)
         vite_png_mo = ImageMobject(VITE_PNG)
         vue_svg_mo = SVGMobject(VUE_SVG)
-        react_svg_mo.scale_to_fit_height(img_initial_height)
+        react_svg_mo.scale_to_fit_height(initial_height_large)
         react_svg_mo.move_to(ORIGIN + 2 * UL)
-        tailwind_svg_mo.scale_to_fit_height(svg_wordmark_initial_height)
+        tailwind_svg_mo.scale_to_fit_height(initial_height_small)
         tailwind_svg_mo.next_to(react_svg_mo, RIGHT)
-        ts_svg_mo.scale_to_fit_height(img_initial_height)
+        ts_svg_mo.scale_to_fit_height(initial_height_large)
         ts_svg_mo.next_to(react_svg_mo, DOWN)
-        vite_png_mo.scale_to_fit_height(img_initial_height)
+        vite_png_mo.scale_to_fit_height(initial_height_large)
         vite_png_mo.next_to(ts_svg_mo, RIGHT)
-        vue_svg_mo.scale_to_fit_height(img_initial_height)
+        vue_svg_mo.scale_to_fit_height(initial_height_large)
         vue_svg_mo.next_to(vite_png_mo, RIGHT)
 
         self.wait(7)  # 首先出场的是
@@ -223,9 +223,9 @@ class RankListDemo(Scene):
 
         angular_svg_mo = SVGMobject(ANGULAR_SVG)
         redux_svg_mo = SVGMobject(REDUX_SVG)
-        angular_svg_mo.scale_to_fit_height(img_initial_height)
+        angular_svg_mo.scale_to_fit_height(initial_height_large)
         angular_svg_mo.move_to(ORIGIN + LEFT)
-        redux_svg_mo.scale_to_fit_height(img_initial_height)
+        redux_svg_mo.scale_to_fit_height(initial_height_large)
         redux_svg_mo.next_to(angular_svg_mo, RIGHT)
         self.play(
             LaggedStart(
@@ -247,7 +247,7 @@ class RankListDemo(Scene):
         frontend_svg_la = VGroup(angular_svg_mo, redux_svg_mo)
 
         bun_svg_mo = SVGMobject(BUN_SVG)
-        bun_svg_mo.scale_to_fit_height(img_initial_height)
+        bun_svg_mo.scale_to_fit_height(initial_height_large)
         self.play(FadeIn(bun_svg_mo))
         self.wait(8)  # 给到人上人
         self.play(
@@ -257,7 +257,7 @@ class RankListDemo(Scene):
         self.wait(2)  # 等待“接下来我们迎来了”说完
 
         wasm_svg_mo = SVGMobject(WASM_SVG)
-        wasm_svg_mo.scale_to_fit_height(img_initial_height)
+        wasm_svg_mo.scale_to_fit_height(initial_height_large)
         self.play(FadeIn(wasm_svg_mo))
         self.wait(16)  # 从“前端大祭司”那句到“综合下给到顶级”之前
         self.play(
@@ -267,9 +267,9 @@ class RankListDemo(Scene):
 
         postgresql_svg_mo = SVGMobject(POSTGRESQL_SVG)
         redis_svg_mo = SVGMobject(REDIS_SVG)
-        postgresql_svg_mo.scale_to_fit_height(img_initial_height)
+        postgresql_svg_mo.scale_to_fit_height(initial_height_large)
         postgresql_svg_mo.move_to(ORIGIN + LEFT)
-        redis_svg_mo.scale_to_fit_height(img_initial_height)
+        redis_svg_mo.scale_to_fit_height(initial_height_large)
         redis_svg_mo.next_to(postgresql_svg_mo, RIGHT)
         self.play(
             LaggedStart(
@@ -292,7 +292,7 @@ class RankListDemo(Scene):
         backend_svg_hang = VGroup(postgresql_svg_mo, redis_svg_mo)
 
         pandas_svg_mo = SVGMobject(PANDAS_SVG)
-        pandas_svg_mo.scale_to_fit_height(img_initial_height)
+        pandas_svg_mo.scale_to_fit_height(initial_height_large)
         self.play(FadeIn(pandas_svg_mo))
         self.wait(7)  # 跟前端坐一桌，拉完了
         self.play(
