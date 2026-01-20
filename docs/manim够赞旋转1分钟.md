@@ -18,14 +18,14 @@ class RotateImgWithAcceleration(Scene):
 
         img2.next_to(img1, RIGHT, buff=1.6)
 
-        all_imgs = Group(img1, img2, img3)
+        all_imgs = Group(img1, img2)
         all_imgs.center()
 
         INITIAL_SPEED = 2
         ACCELERATION = 0.15
         time_tracker_2d = ValueTracker(0)
 
-        def update_rotation_2d(mob, dt):
+        def update_rotation_2d(mob: Mobject, dt):
             time_tracker_2d.increment_value(dt)
             new_speed = INITIAL_SPEED + ACCELERATION * time_tracker_2d.get_value()
             mob.rotate(

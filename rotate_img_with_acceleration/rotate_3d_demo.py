@@ -57,14 +57,14 @@ class Rotate3dDemo(ThreeDScene):
         time_tracker_3 = ValueTracker(0)
 
         def make_z_rot_updater(tracker):
-            def updater(mob, dt):
+            def updater(mob: Mobject, dt):
                 tracker.increment_value(dt)
                 speed = INITIAL_SPEED + ACCELERATION * tracker.get_value()
                 mob.rotate(speed * dt, axis=Z_AXIS, about_point=mob.get_center())
             return updater
 
         def make_y_rot_updater(tracker):
-            def updater(mob, dt):
+            def updater(mob: Mobject, dt):
                 tracker.increment_value(dt)
                 speed = INITIAL_SPEED + ACCELERATION * tracker.get_value()
                 mob.rotate(speed * dt, axis=Y_AXIS, about_point=mob.get_center())
